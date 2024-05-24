@@ -5,6 +5,7 @@
  */
 package fr.insalyon.dasi.test.frontend;
 
+import fr.insalyon.dasi.predictif.services.Services;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -13,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class Action {
     
-    String service;
+    Services service;
     
-    public Action(String service){
+    public Action(Services service){
         this.service = service;
     }
     

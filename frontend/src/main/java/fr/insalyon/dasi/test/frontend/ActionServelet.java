@@ -5,12 +5,9 @@
  */
 package fr.insalyon.dasi.test.frontend;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import fr.insalyon.dasi.predictif.persistence.JpaUtil;
+import fr.insalyon.dasi.predictif.services.Services;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.Instant;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +20,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ActionServelet", urlPatterns = {"/ActionServelet"})
 public class ActionServelet extends HttpServlet {
+
+    @Override
+    public void init() throws ServletException {
+        super.init(); //To change body of generated methods, choose Tools | Templates.
+        JpaUtil.creerFabriquePersistance();
+    }
+
+    @Override
+    public void destroy() {
+        JpaUtil.fermerFabriquePersistance();
+        super.destroy(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +51,12 @@ public class ActionServelet extends HttpServlet {
         
         String todo = request.getParameter("todo");
         
+        Services service = new Services();
+        
         switch (todo){
             
             case "connecter" : {
-                new AuthentifierUtilisateurAction("achanger").execute(request);
+                new AuthentifierUtilisateurAction(service).execute(request);
                 new ProfilUtilisateurSerialisation().appliquer(request, response);
                 break;
             }

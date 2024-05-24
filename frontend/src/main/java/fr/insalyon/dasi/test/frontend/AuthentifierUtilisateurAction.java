@@ -5,6 +5,7 @@
  */
 package fr.insalyon.dasi.test.frontend;
 
+import fr.insalyon.dasi.predictif.services.Services;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class AuthentifierUtilisateurAction extends Action{
 
-    public AuthentifierUtilisateurAction(String service) {
+    public AuthentifierUtilisateurAction(Services service) {
         super(service);
     }
 
