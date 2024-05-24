@@ -7,6 +7,14 @@ package fr.insalyon.dasi.test.frontend;
 
 import fr.insalyon.dasi.predictif.persistence.JpaUtil;
 import fr.insalyon.dasi.predictif.services.Services;
+import fr.insalyon.dasi.test.frontend.Action.AuthentifierUtilisateurAction;
+import fr.insalyon.dasi.test.frontend.Action.GetMediumsAction;
+import fr.insalyon.dasi.test.frontend.Action.InscrireUtilisateurAction;
+import fr.insalyon.dasi.test.frontend.Action.RecupererProfilClient;
+import fr.insalyon.dasi.test.frontend.Action.RecupererProfilEmploye;
+import fr.insalyon.dasi.test.frontend.Serialisation.ListeMediumsSerialisation;
+import fr.insalyon.dasi.test.frontend.Serialisation.ProfilUtilisateurCompletSerialisation;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,18 +31,16 @@ public class ActionServelet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        super.init(); //To change body of generated methods, choose Tools | Templates.
+        super.init();
         JpaUtil.creerFabriquePersistance();
     }
 
     @Override
     public void destroy() {
         JpaUtil.fermerFabriquePersistance();
-        super.destroy(); //To change body of generated methods, choose Tools | Templates.
+        super.destroy(); 
     }
     
-    
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,12 +63,34 @@ public class ActionServelet extends HttpServlet {
             
             case "connecter" : {
                 new AuthentifierUtilisateurAction(service).execute(request);
-                new ProfilUtilisateurSerialisation().appliquer(request, response);
+                // todo : récupérer infos utilisateurs dans la session
+                break;
+            }
+            case "inscrire" : {
+                new InscrireUtilisateurAction(service).execute(request);
+                // todo : récupérer infos utilisateurs dans la session
+                break;
+            }
+            // le paramètre personneId est envoyé par le front-end en paramètre à faire à travers un token
+            case "profilClient" : {
+                new RecupererProfilClient(service).execute(request);
+                new ProfilUtilisateurCompletSerialisation().appliquer(request, response);
+                break;
+            }
+            case "profilEmploye" : {
+                new RecupererProfilEmploye(service).execute(request);
+                new ProfilUtilisateurCompletSerialisation().appliquer(request, response);
+                break;
+            }
+            case "getMediums" : {
+                new GetMediumsAction(service).execute(request);
+                new ListeMediumsSerialisation().appliquer(request, response);
                 break;
             }
             default : {
                 break;
             }
+
         }
         
     }
