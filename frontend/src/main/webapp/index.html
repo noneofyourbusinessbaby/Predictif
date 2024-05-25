@@ -1,10 +1,73 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mystery+Quest&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="scripts/main.js"></script>
+
+    <script src="tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header
+      class="bg-gray-800 text-white py-2 px-12 flex justify-between sticky top-0"
+    >
+      <div class="flex items-center gap-x-3">
+        <span>
+          <img
+            src="logo.png"
+            alt="Predictif"
+            class="h-10 w-10"
+          />
+        </span>
+        <h1 class="text-xl">Predictif</h1>
+      </div>
+      <div class="flex items-center gap-x-3">
+        <a href="login.html">Login </a>
+        <a
+          href="register.html"
+          class="bg-indigo-600 py-2 px-5 rounded-md"
+          >Register</a
+        >
+      </div>
+    </header>
+    <main class="flex min-h-screen bg-gradient-to-t from-violet-100 to-gray-50">
+      <article class="m-auto flex flex-col gap-y-5 text-center">
+        <h1
+          style="font-family: 'Mystery Quest'"
+          class="text-6xl uppercase text-indigo-500"
+        >
+          Predictif
+        </h1>
+        <p class="text-gray-500">
+          Découvrez notre cabinet de voyance par téléphone, réunissant des
+          spirites, astrologues et cartomanciens. Nos médiums, reconnus
+          internationalement pour leurs talents, ont été sélectionnés pour leur
+          précision, leur honnêteté et leur sérieux. Nous accordons une
+          importance primordiale au respect de la déontologie.
+        </p>
+      </article>
+    </main>
+    <script type="text/javascript"></script>
+  </body>
 </html>
