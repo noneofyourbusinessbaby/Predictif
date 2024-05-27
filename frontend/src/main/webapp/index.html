@@ -28,7 +28,9 @@
     <script src="tailwind.config.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
+  <body
+    class="flex flex-col min-h-screen bg-gradient-to-t from-violet-100 to-gray-50"
+  >
     <header
       class="bg-gray-800 text-white py-2 px-12 flex justify-between sticky top-0"
     >
@@ -51,8 +53,8 @@
         >
       </div>
     </header>
-    <main class="flex min-h-screen bg-gradient-to-t from-violet-100 to-gray-50">
-      <article class="m-auto flex flex-col gap-y-5 text-center">
+    <main class="flex flex-col flex-grow">
+      <article class="container m-auto flex flex-col gap-y-6 text-center">
         <h1
           style="font-family: 'Mystery Quest'"
           class="text-6xl uppercase text-indigo-500"
@@ -66,6 +68,9 @@
           précision, leur honnêteté et leur sérieux. Nous accordons une
           importance primordiale au respect de la déontologie.
         </p>
+        <div>
+          <h2 class="text-gray-900 font-semibold">Nos médiums</h2>
+        </div>
       </article>
     </main>
     <script type="text/javascript"></script>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <script src="scripts/main.js"></script>
+
+    <script src="tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="flex flex-col min-h-screen bg-gradient-to-t from-violet-100 to-gray-50"
+  >
+    <header
+      class="bg-gray-800 text-white py-2 px-12 flex justify-between sticky top-0"
+    >
+      <div class="flex items-center gap-x-3">
+        <span>
+          <img
+            src="logo.png"
+            alt="Predictif"
+            class="h-10 w-10"
+          />
+        </span>
+        <h1 class="text-xl">Predictif</h1>
+      </div>
+      <div class="flex items-center gap-x-3">
+        <a href="login.html">Login </a>
+        <a
+          href="register.html"
+          class="bg-indigo-600 py-2 px-5 rounded-md"
+          >Register</a
+        >
+      </div>
+    </header>
+    <main class="flex flex-col flex-grow gap-y-5 m-5">
+      <h1 class="font-semibold text-3xl text-center text-gray-900">
+        Mes informations
+      </h1>
+      <div class="flex justify-center">
+        <div class="grid grid-cols-2 gap-5">
+          <label for="surname">
+            <p class="text-sm font-semibold">Prénom</p>
+            <input
+              readonly
+              type="text"
+              name="surname"
+              placeholder="Jean"
+              class="border border-gray-300 rounded-md p-2 mt-2 w-full"
+            />
+          </label>
+          <label for="name">
+            <p class="text-sm font-semibold">Nom</p>
+            <input
+              readonly
+              type="text"
+              name="name"
+              placeholder="Dupont"
+              class="border border-gray-300 rounded-md p-2 mt-2 w-full"
+            />
+          </label>
+          <label for="mail">
+            <p class="text-sm font-semibold">Mail</p>
+            <input
+              readonly
+              type="email"
+              name="mail"
+              placeholder="jean.dupont@gmail.com"
+              class="border border-gray-300 rounded-md p-2 mt-2 w-full"
+            />
+          </label>
+          <label for="adresse">
+            <p class="text-sm font-semibold">Adresse</p>
+            <input
+              readonly
+              type="text"
+              name="adresse"
+              placeholder="22 rue de la tête d’or Villeurbanne 69100"
+              class="border border-gray-300 rounded-md p-2 mt-2 w-full"
+            />
+          </label>
+          <label for="phone">
+            <p class="text-sm font-semibold">Téléphone</p>
+            <input
+              readonly
+              type="tel"
+              name="phone"
+              placeholder="06 66 89 69 17"
+              class="border border-gray-300 rounded-md p-2 mt-2 w-full"
+            />
+          </label>
+          <label for="genre">
+            <p class="text-sm font-semibold">Genre</p>
+            <input
+              readonly
+              type="text"
+              name="genre"
+              class="border border-gray-300 rounded-md p-2 mt-2 w-full"
+            />
+          </label>
+          <label for="birthdate">
+            <p class="text-sm font-semibold">Date de naissance</p>
+            <input
+              readonly
+              type="date"
+              name="birthdate"
+              class="border border-gray-300 rounded-md p-2 mt-2 w-full"
+            />
+          </label>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript">
+      document.addEventListener("load", () => {
+        fetch("informations", {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+          });
+      });
+    </script>
+  </body>
+</html>
