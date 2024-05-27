@@ -9,6 +9,7 @@ import fr.insalyon.dasi.predictif.models.Personne;
 import fr.insalyon.dasi.predictif.services.Services;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,7 +30,9 @@ public class AuthentifierUtilisateurAction extends Action{
         // todo vérifier que les champs ne sont pas null
 
         Personne user = Services.connexionPersonne(email, password);
-
-        request.setAttribute("personne", user);        
+                
+        request.setAttribute("personne", user);
+            
+        request.getSession().setAttribute("personneId", user.getId());
     }
 }

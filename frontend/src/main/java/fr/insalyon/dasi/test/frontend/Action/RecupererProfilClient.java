@@ -17,7 +17,7 @@ public class RecupererProfilClient extends Action{
         Long id = Long.parseLong(request.getParameter("personneId"));
 
         Client client = Services.getClientById(id);
-
+        
         request.setAttribute("personne", client);        
         
     }

@@ -1,3 +1,5 @@
+package fr.insalyon.dasi.test.frontend.Serialisation;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -9,8 +11,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import fr.insalyon.dasi.predictif.models.Astrologue;
+import fr.insalyon.dasi.predictif.models.Cartomancien;
 
 import fr.insalyon.dasi.predictif.models.Medium;
+import fr.insalyon.dasi.predictif.models.Spirite;
+import fr.insalyon.dasi.test.frontend.Serialisation.Serialisation;
 
 public class ListeMediumsSerialisation extends Serialisation {
 
@@ -34,10 +40,23 @@ public class ListeMediumsSerialisation extends Serialisation {
                 jsonMedium.addProperty("genre", medium.getGenre());
 
                 jsonMedium.addProperty("presentation", medium.getPresentation());
-
+                
+                if (medium instanceof Astrologue){
+                    jsonMedium.addProperty("formation", ((Astrologue) medium).getFormation());
+                    jsonMedium.addProperty("promotion", ((Astrologue) medium).getPromotion());
+                }
+                else if (medium instanceof Spirite){
+                    JsonArray jsonSupport = new JsonArray();
+                    for (String support : ((Spirite) medium).getSupports()){
+                        jsonSupport.add(support);
+                    }
+                    jsonMedium.add("support", jsonSupport);
+                }
+                else{
+                    // ON FAIT RIEN 
+                }
                 jsonListeMediums.add(jsonMedium);
             }
-
             container.add("mediums", jsonListeMediums);
         }
         else{

@@ -5,6 +5,11 @@
  */
 package fr.insalyon.dasi.test.frontend;
 
+import fr.insalyon.dasi.test.frontend.Serialisation.CreerConsultationSerialisation;
+import fr.insalyon.dasi.test.frontend.Action.CreerConsultationAction;
+import fr.insalyon.dasi.test.frontend.Action.GetConsultationEnCoursAction;
+import fr.insalyon.dasi.test.frontend.Serialisation.InscriptionClientSerialisation;
+import fr.insalyon.dasi.test.frontend.Serialisation.ConnexionUtilisateurSerialisation;
 import fr.insalyon.dasi.predictif.persistence.JpaUtil;
 import fr.insalyon.dasi.predictif.services.Services;
 import fr.insalyon.dasi.test.frontend.Action.AuthentifierUtilisateurAction;
@@ -12,9 +17,9 @@ import fr.insalyon.dasi.test.frontend.Action.GetMediumsAction;
 import fr.insalyon.dasi.test.frontend.Action.InscrireUtilisateurAction;
 import fr.insalyon.dasi.test.frontend.Action.RecupererProfilClient;
 import fr.insalyon.dasi.test.frontend.Action.RecupererProfilEmploye;
-import fr.insalyon.dasi.test.frontend.Serialisation.ListeMediumsSerialisation;
+import fr.insalyon.dasi.test.frontend.Serialisation.ConsultationSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ProfilUtilisateurCompletSerialisation;
-
+import fr.insalyon.dasi.test.frontend.Serialisation.ListeMediumsSerialisation;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,19 +64,20 @@ public class ActionServelet extends HttpServlet {
         
         Services service = new Services();
         
+        
         switch (todo){
             
             case "connecter" : {
                 new AuthentifierUtilisateurAction(service).execute(request);
-                // todo : récupérer infos utilisateurs dans la session
-                break;
+                new ConnexionUtilisateurSerialisation().appliquer(request, response); // Si la personne n'est pas logged on a un null qui est renvoyé
+                break;  
             }
             case "inscrire" : {
                 new InscrireUtilisateurAction(service).execute(request);
-                // todo : récupérer infos utilisateurs dans la session
+                new InscriptionClientSerialisation().appliquer(request, response);
                 break;
             }
-            // le paramètre personneId est envoyé par le front-end en paramètre à faire à travers un token
+            // paratge en deux selon la demande
             case "profilClient" : {
                 new RecupererProfilClient(service).execute(request);
                 new ProfilUtilisateurCompletSerialisation().appliquer(request, response);
@@ -86,6 +92,15 @@ public class ActionServelet extends HttpServlet {
                 new GetMediumsAction(service).execute(request);
                 new ListeMediumsSerialisation().appliquer(request, response);
                 break;
+            }
+            case "getConsultationEnCours" : {
+                new GetConsultationEnCoursAction(service).execute(request);
+                new ConsultationSerialisation().appliquer(request, response);     
+            } 
+            case "creerConsultation" : {
+                new CreerConsultationAction(service).execute(request);
+                new CreerConsultationSerialisation(service).appliquer(request ,response);
+        
             }
             default : {
                 break;
