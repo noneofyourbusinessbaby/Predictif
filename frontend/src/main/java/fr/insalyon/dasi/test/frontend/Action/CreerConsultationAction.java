@@ -26,14 +26,16 @@ public class CreerConsultationAction extends Action {
         
         Long personneId = Long.parseLong(request.getSession().getAttribute("personneId").toString());
         
-        System.out.println(personneId);
         Client client = Services.getClientById(personneId);
+        
+        if (client == null) return;
         
         Medium medium = Services.getMediumById(Long.parseLong(request.getParameter("mediumId")));
         
-        if (medium != null && client != null) {
-            Consultation consultation = Services.creerConsultation(client, medium);
-            request.setAttribute("consultation", consultation);
-        }
+        if (medium == null) return;
+        
+        Consultation consultation = Services.creerConsultation(client, medium);
+        
+        request.setAttribute("consultation", consultation);
     }  
 }

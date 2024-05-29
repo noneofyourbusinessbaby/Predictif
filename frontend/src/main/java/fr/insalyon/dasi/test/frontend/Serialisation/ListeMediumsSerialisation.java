@@ -1,6 +1,5 @@
 package fr.insalyon.dasi.test.frontend.Serialisation;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import fr.insalyon.dasi.predictif.models.Medium;
+import org.apache.http.HttpStatus;
 
 public class ListeMediumsSerialisation extends Serialisation {
 
@@ -21,28 +21,26 @@ public class ListeMediumsSerialisation extends Serialisation {
         List<Medium> mediums = (List<Medium>) request.getAttribute("mediums");
 
         JsonObject container = new JsonObject();
+        
+        JsonArray jsonListeMediums = new JsonArray();
     
         if (mediums != null) {
-
-            JsonArray jsonListeMediums = new JsonArray();
-            
             for (Medium medium : mediums) {
-
                 jsonListeMediums.add(ServiceSerialisation.toJsonObjectMedium(medium));
             }
-            container.add("mediums", jsonListeMediums);
         }
-        else{
-            container.add("mediums", null);
-        }
+        
+        container.add("mediums", jsonListeMediums);
         
         try (PrintWriter out = response.getWriter()) {
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            
             gson.toJson(container, out);
             
-        } catch (IOException ex) {
-            // Logger.getLogger(ListeMediumsSerialisation.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.setStatus(HttpStatus.SC_METHOD_FAILURE);
         }
     }
 

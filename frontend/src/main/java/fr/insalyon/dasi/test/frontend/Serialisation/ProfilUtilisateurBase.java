@@ -39,9 +39,10 @@ public class ProfilUtilisateurBase extends Serialisation{
         try (PrintWriter out = response.getWriter()) {
             
             Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-            out.println(gson.toJson(container));
+            
+            gson.toJson(container, out);
+            
             out.close()  ;
-
         } catch (Exception e){
             e.printStackTrace();
             response.setStatus(HttpStatus.SC_METHOD_FAILURE);

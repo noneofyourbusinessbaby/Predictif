@@ -91,8 +91,19 @@
       /**
        * @param {HTMLFormElement} form
        */
+      
+      
       const seConnecter = (form) => {
-        MakeRequest("connecter", new FormData(form))
+          
+          const Form = new FormData(form);
+          
+          const Params = new URLSearchParams();
+          
+          Form.forEach((value, key) => Params.append(key, value));
+          
+          const Url = "http://localhost:8080/frontend/ActionServelet?action=";
+          
+          fetch(Url + "connecter&" + Params.toString())
           .then((res) => res.json())
           .then((data) => {
             if (data.error) {
@@ -104,8 +115,7 @@
           .catch((err) => {
             console.error(err);
             alert("Une erreur est survenue");
-          });
-      };
+          })};
     </script>
   </body>
 </html>

@@ -5,6 +5,7 @@
  */
 package fr.insalyon.dasi.test.frontend;
 
+import fr.insalyon.dasi.test.frontend.Action.RecupererAccueilClientConnecte;
 import fr.insalyon.dasi.test.frontend.Serialisation.CreerConsultationSerialisation;
 import fr.insalyon.dasi.test.frontend.Action.CreerConsultationAction;
 import fr.insalyon.dasi.test.frontend.Action.GetConsultationEnCoursAction;
@@ -15,10 +16,14 @@ import fr.insalyon.dasi.predictif.services.Services;
 import fr.insalyon.dasi.test.frontend.Action.AuthentifierUtilisateurAction;
 import fr.insalyon.dasi.test.frontend.Action.GetMediumsAction;
 import fr.insalyon.dasi.test.frontend.Action.InscrireUtilisateurAction;
-import fr.insalyon.dasi.test.frontend.Action.RecupererProfilClient;
-import fr.insalyon.dasi.test.frontend.Action.RecupererProfilEmploye;
+import fr.insalyon.dasi.test.frontend.Action.RecupererAcueilEmployeConnecteAction;
+import fr.insalyon.dasi.test.frontend.Action.RecupererProfilConnecteAction;
+import fr.insalyon.dasi.test.frontend.Action.RecupererResultatPredictionAction;
+import fr.insalyon.dasi.test.frontend.Serialisation.AccueilClientConnecteSerialisation;
+import fr.insalyon.dasi.test.frontend.Serialisation.AccueilEmployeConnecteSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ProfilClientConsultationEnCoursSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ListeMediumsSerialisation;
+import fr.insalyon.dasi.test.frontend.Serialisation.PredictionResultatSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ProfilUtilisateurBase;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -63,51 +68,57 @@ public class ActionServelet extends HttpServlet {
         String todo = request.getParameter("action");
         
         Services service = new Services();
-        
-        
+                
         switch (todo){
-            
-            case "connecter" : {
+                      
+            // http://localhost:8080/frontend/ActionServelet?action=SeConnecter?email=martion.camille@gmail.com&password=123456789
+            case "SeConnecter" : {
                 new AuthentifierUtilisateurAction(service).execute(request);
                 new ConnexionUtilisateurSerialisation().appliquer(request, response); // Si la personne n'est pas logged on a un null qui est renvoyé
                 break;  
             }
-            case "inscrire" : {
+            case "SeEnregistrer" : {
                 new InscrireUtilisateurAction(service).execute(request);
                 new InscriptionClientSerialisation().appliquer(request, response);
                 break;
             }
-            case "profilPersonneConnecte" : {
+            case "GetProfilPersonneConnecte" : {
+                new RecupererProfilConnecteAction(service).execute(request);
+                new ProfilUtilisateurBase().appliquer(request, response);
+                break;
             }
-           
-            /*            // paratge en deux selon la demande
-            case "profilClient" : {
-            new RecupererProfilClient(service).execute(request);
-            new ProfilUtilisateurBase().appliquer(request, response);
-            break;
+            case "GetAccueilClientConnecte" : {
+                new RecupererAccueilClientConnecte(service).execute(request);
+                new AccueilClientConnecteSerialisation().appliquer(request, response);
+                break;
             }
-            case "profilEmploye" : {
-            new RecupererProfilEmploye(service).execute(request);
-            new ProfilUtilisateurBase().appliquer(request, response);
-            break;
-            }*/
-            case "getMediums" : {
+            case "GetAcueilEmployeConnecte" : {
+                new RecupererAcueilEmployeConnecteAction(service).execute(request);
+                new AccueilEmployeConnecteSerialisation().appliquer(request,response);
+                break;
+            }
+            case "GetPredictions" : {
+                new RecupererResultatPredictionAction(service).execute(request);
+                new PredictionResultatSerialisation().appliquer(request, response);
+                break;
+            }
+            case "GetMediums" : {
                 new GetMediumsAction(service).execute(request);
                 new ListeMediumsSerialisation().appliquer(request, response);
                 break;
             }
-            case "getConsultationEnCours" : { //reuqete pour deux pages 
+            case "GetConsultationEnCours" : { //reuqete pour deux pages 
                 new GetConsultationEnCoursAction(service).execute(request);
                 new ProfilClientConsultationEnCoursSerialisation().appliquer(request, response);     
+                break;
             } 
-            case "creerConsultation" : {
+            case "CreateConsultation" : {
                 new CreerConsultationAction(service).execute(request);
                 new CreerConsultationSerialisation(service).appliquer(request ,response);
-        
+                break;
             }
             default : {
                 break;
-            }
 
         }
         
@@ -151,5 +162,4 @@ public class ActionServelet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

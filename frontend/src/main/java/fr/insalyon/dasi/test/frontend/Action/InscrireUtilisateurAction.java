@@ -7,6 +7,7 @@ import fr.insalyon.dasi.predictif.services.Services;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+
 public class InscrireUtilisateurAction extends Action {
 
     public InscrireUtilisateurAction(Services service) {
@@ -36,7 +37,6 @@ public class InscrireUtilisateurAction extends Action {
         String adressePostale = request.getParameter("adressePostale");
         String telephone = request.getParameter("telephone");
 
-
         if (prenom != null && nom != null && genre != 0 && dateDeNaissance != null && email != null && motDePasse != null && adressePostale != null && telephone != null) {
 
             Client client = new Client(adressePostale, dateDeNaissance, nom, prenom, email, genre, motDePasse, telephone);
@@ -44,8 +44,6 @@ public class InscrireUtilisateurAction extends Action {
             Services.inscrireClient(client);
 
             request.setAttribute("client", client);
-
         }
-
     }
 }

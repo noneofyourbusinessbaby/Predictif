@@ -32,23 +32,23 @@ public class CreerConsultationSerialisation extends Serialisation{
         
         if (consultation == null){
             response.setStatus(HttpStatus.SC_BAD_REQUEST);
+            
             return;
         }
-        else {
+        
+        JsonObject container = new JsonObject();
             
-            JsonObject container = new JsonObject();
-            
-            container.addProperty("consultationId", consultation.getId().toString());
+        container.addProperty("consultationId", consultation.getId());
                     
-            try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
 
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                gson.toJson(container, out);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-            } catch (Exception e){
-                e.printStackTrace();
-                response.setStatus(HttpStatus.SC_METHOD_FAILURE);
-        }
+            gson.toJson(container, out);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            response.setStatus(HttpStatus.SC_METHOD_FAILURE);
         }
     }
     

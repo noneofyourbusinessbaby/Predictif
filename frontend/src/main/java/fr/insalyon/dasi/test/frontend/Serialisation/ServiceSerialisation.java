@@ -34,8 +34,9 @@ public class ServiceSerialisation {
         
         JsonObject container = new JsonObject();
         container.addProperty("denominationMedium", consultation.getMedium().getDenomination());
+        container.addProperty("mediumType", consultation.getMedium().getClass().getName());
         container.addProperty("dateDebut", consultation.getDateDebut().toString());
-        container.addProperty("Statut", stringStatut);
+        container.addProperty("statut", stringStatut);
         
         return container;
     }
@@ -50,10 +51,11 @@ public class ServiceSerialisation {
         
         JsonObject container = new JsonObject();
         container.addProperty("denominationMedium", consultation.getMedium().getDenomination());
+        container.addProperty("mediumType", consultation.getMedium().getClass().getName());
         container.addProperty("prenomClient", consultation.getClient().getPrenom());
         container.addProperty("nomClient", consultation.getClient().getNom());
         container.addProperty("dateDebut", consultation.getDateDebut().toString());
-        container.addProperty("Statut", stringStatut);
+        container.addProperty("statut", stringStatut);
         
         return container;
     }
@@ -130,7 +132,7 @@ public class ServiceSerialisation {
         return jsonProfilAstral;
     }
 
-    static JsonArray toJsonObjectListeConsultation(Client client) {
+    public static JsonArray toJsonObjectListeConsultation(Client client) {
         
         JsonArray listeConsultationJson = new JsonArray();
         
@@ -145,7 +147,7 @@ public class ServiceSerialisation {
        return listeConsultationJson;
     }
     
-    static JsonArray toJsonObjectListeConsultation(Employe employe) {
+    public static JsonArray toJsonObjectListeConsultation(Employe employe) {
         
         JsonArray listeConsultationJson = new JsonArray();
         
@@ -160,13 +162,14 @@ public class ServiceSerialisation {
        return listeConsultationJson;
     }
 
-    static JsonElement toJsonObjectAideConsultation(List<String> predictions) {
+    public static JsonObject toJsonObjectAideConsultation(List<String> predictions) {
         
-        JsonArray listePredisctionsJson = new JsonArray();
+        JsonObject predisctionsJson = new JsonObject();
         
-        for (String predisction : predictions){
-            listePredisctionsJson.add(predisction);
-        }
-        return listePredisctionsJson;
+        predisctionsJson.addProperty("Amour", predictions.get(0));
+        predisctionsJson.addProperty("Santé", predictions.get(1));
+        predisctionsJson.addProperty("Travail",  predictions.get(2));
+
+        return predisctionsJson;
     }
 }

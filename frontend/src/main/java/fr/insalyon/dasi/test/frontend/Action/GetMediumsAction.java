@@ -20,5 +20,4 @@ public class GetMediumsAction extends Action {
 
         request.setAttribute("mediums", mediums);
     }
-    
 }

@@ -9,7 +9,6 @@ import fr.insalyon.dasi.predictif.models.Personne;
 import fr.insalyon.dasi.predictif.services.Services;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,9 +26,12 @@ public class AuthentifierUtilisateurAction extends Action{
         String password = request.getParameter("password");
         
         String email = request.getParameter("email");
-        // todo vérifier que les champs ne sont pas null
 
         Personne user = Services.connexionPersonne(email, password);
+        
+        if (user == null){
+            return;
+        }
                 
         request.setAttribute("personne", user);
             

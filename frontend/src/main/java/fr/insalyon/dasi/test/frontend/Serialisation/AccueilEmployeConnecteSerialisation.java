@@ -7,10 +7,11 @@ package fr.insalyon.dasi.test.frontend.Serialisation;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import fr.insalyon.dasi.predictif.models.Client;
+import com.google.gson.JsonArray;
 import fr.insalyon.dasi.predictif.models.Consultation;
+import fr.insalyon.dasi.predictif.models.Employe;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpStatus;
@@ -19,25 +20,20 @@ import org.apache.http.HttpStatus;
  *
  * @author nhajjhassa
  */
-public class ProfilClientConsultationEnCoursSerialisation extends Serialisation{
+public class AccueilEmployeConnecteSerialisation extends Serialisation {
 
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) {
         
-         Consultation consultation = (Consultation) request.getAttribute("consultationEnCours");
-         
-         if (consultation == null){
-             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-             return;
-         }
-
-        JsonObject container = new JsonObject();
-
-        Client client = consultation.getClient();
-
-        container.add("profilAstral", ServiceSerialisation.toJsonProfilAstral(client));
-        container.add("profilClient", ServiceSerialisation.toJsonObjectPersonne(client));
-
+        Employe employe = (Employe) request.getAttribute("employe");
+      
+        if (employe == null){
+            response.setStatus(HttpStatus.SC_BAD_REQUEST); // todo chnager en throw
+            return;
+        }
+        
+        JsonArray container = ServiceSerialisation.toJsonObjectListeConsultation(employe);
+        
         try (PrintWriter out = response.getWriter()) {
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -48,7 +44,7 @@ public class ProfilClientConsultationEnCoursSerialisation extends Serialisation{
         } catch (Exception e){
             e.printStackTrace();
             response.setStatus(HttpStatus.SC_METHOD_FAILURE);
-        }
+        }           
+        
     }
 }
-
