@@ -30,45 +30,23 @@
         <h1 class="text-xl">Predictif</h1>
       </div>
       <div class="flex items-center gap-x-3">
-        <a href="login.html">Login </a>
+        <a href="PageSeConnecter.html">Login</a>
         <a
-          href="register.html"
+          href="PageCreationCompte.html"
           class="bg-indigo-600 py-2 px-5 rounded-md"
           >Register</a
         >
       </div>
     </header>
     <main class="flex flex-col container">
-      <article class="flex justify-center gap-x-6 text-center py-12">
-        <section>
-          <span>
-            <img
-              src="voyant.png"
-              alt="Signe du zodique"
-              class="w-32 h-32 rounded-full"
-            />
-          </span>
-          <p class="mt-5 text-gray-800 font-semibold text-sm">
-            Signe du zodiaque
-          </p>
-        </section>
-        <section>
-          <span>
-            <img
-              src="voyant.png"
-              alt="Signe du zodique"
-              class="w-32 h-32 rounded-full"
-            />
-          </span>
-          <p class="mt-5 text-gray-800 font-semibold text-sm">
-            Signe du zodiaque
-          </p>
-        </section>
-      </article>
+      <article
+        id="profilAstral"
+        class="flex justify-center gap-x-6 text-center py-12"
+      ></article>
       <div class="flex flex-col gap-y-5">
         <header>
           <h2 class="font-semibold text-3xl text-center text-gray-900">
-            Historique de voyage
+            Historique de consultations
           </h2>
         </header>
         <table class="w-full text-left">
@@ -79,25 +57,10 @@
               <th class="uppercase w-1/4 p-3">Status</th>
             </tr>
           </thead>
-          <tbody class="bg-white">
-            <tr>
-              <td class="p-3">
-                <a href="profile">
-                  Mmm. Gwenaelle <span class="font-semibold">Spirite</span>
-                </a>
-              </td>
-              <td class="p-3">
-                <p>Mai 22 ,2024</p>
-              </td>
-              <td class="p-3">
-                <span
-                  class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
-                >
-                  En attente
-                </span>
-              </td>
-            </tr>
-          </tbody>
+          <tbody
+            id="consultations"
+            class="bg-white"
+          ></tbody>
         </table>
         <footer>
           <a
@@ -108,6 +71,71 @@
         </footer>
       </div>
     </main>
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+      const profilAstralToHTML = (key, value) => {
+        const section = document.createElement("section");
+
+        section.innerHTML = `
+           <span>
+             <img
+               src="voyant.png"
+               alt="${key}"
+               class="w-32 h-32 rounded-full"
+             />
+           </span>
+           <p class="mt-5 text-gray-800 font-semibold text-sm">
+             ${key}
+           </p>
+         `;
+
+        return section;
+      };
+
+      const consultationToHTML = (props) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td class="p-3">
+            <a href="profile">
+              ${props.denominationMedium} <span class="font-semibold">${props.mediumType}</span>
+            </a>
+          </td>
+          <td class="p-3">
+            <p>${props.dateDebut}</p>
+          </td>
+          <td class="p-3">
+            <span
+              class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
+            >
+              ${props.status}
+            </span>
+          </td>
+        `;
+
+        return tr;
+      };
+
+      document.addEventListener("load", () => {
+        MakeRequest("getSomething", new FormData())
+          .then((response) => response.json())
+          .then(({ profilAstral, consultations }) => {
+            const profilAstralNode = document.getElementById("profilAstral");
+
+            Object.entries(profilAstral).forEach(([key, value]) => {
+              profilAstralNode.appendChild(profilAstralToHTML(key, value));
+            });
+
+            const consultationHistorique = consultations.filter(
+              ({ status }) => status === "Validée"
+            );
+
+            const consultationsNode = document.getElementById("consultations");
+
+            consultationHistorique.forEach((consultation) => {
+              consultationsNode.appendChild(consultationToHTML(consultation));
+            });
+          });
+      });
+    </script>
   </body>
 </html>

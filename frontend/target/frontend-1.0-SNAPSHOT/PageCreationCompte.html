@@ -30,9 +30,9 @@
         <h1 class="text-xl">Predictif</h1>
       </div>
       <div class="flex items-center gap-x-3">
-        <a href="login.html">Login </a>
+        <a href="PageSeConnecter.html">Login</a>
         <a
-          href="register.html"
+          href="PageCreationCompte.html"
           class="bg-indigo-600 py-2 px-5 rounded-md"
           >Register</a
         >
@@ -49,11 +49,11 @@
       >
         <article class="grid grid-cols-2 gap-5">
           <section>
-            <label for="surname">
+            <label for="prenom">
               <p class="text-sm font-semibold">Prénom</p>
               <input
                 type="text"
-                name="surname"
+                name="prenom"
                 placeholder="Jean"
                 class="border border-gray-300 rounded-md p-2 mt-2 w-full"
               />
@@ -61,11 +61,11 @@
             <p class="text-sm text-gray-500 mt-2">Entrez votre prénom</p>
           </section>
           <section>
-            <label for="name">
+            <label for="nom">
               <p class="text-sm font-semibold">Nom</p>
               <input
                 type="text"
-                name="name"
+                name="nom"
                 placeholder="Dupont"
                 class="border border-gray-300 rounded-md p-2 mt-2 w-full"
               />
@@ -73,11 +73,11 @@
             <p class="text-sm text-gray-500 mt-2">Entrez votre nom</p>
           </section>
           <section>
-            <label for="mail">
+            <label for="email">
               <p class="text-sm font-semibold">Mail</p>
               <input
                 type="email"
-                name="mail"
+                name="email"
                 placeholder="jean.dupont@gmail.com"
                 class="border border-gray-300 rounded-md p-2 mt-2 w-full"
               />
@@ -85,11 +85,11 @@
             <p class="text-sm text-gray-500 mt-2">Entrez votre mail</p>
           </section>
           <section>
-            <label for="adresse">
+            <label for="adressePostale">
               <p class="text-sm font-semibold">Adresse</p>
               <input
                 type="text"
-                name="adresse"
+                name="adressePostale"
                 placeholder="22 rue de la tête d’or Villeurbanne 69100"
                 class="border border-gray-300 rounded-md p-2 mt-2 w-full"
               />
@@ -97,11 +97,11 @@
             <p class="text-sm text-gray-500 mt-2">Entrez votre adresse</p>
           </section>
           <section>
-            <label for="phone">
+            <label for="telephone">
               <p class="text-sm font-semibold">Téléphone</p>
               <input
                 type="tel"
-                name="phone"
+                name="telephone"
                 placeholder="06 66 89 69 17"
                 class="border border-gray-300 rounded-md p-2 mt-2 w-full"
               />
@@ -119,11 +119,11 @@
               >
                 <option
                   selected
-                  value="masculin"
+                  value="M"
                 >
                   Masculin
                 </option>
-                <option value="féminin">Féminin</option>
+                <option value="F">Féminin</option>
               </select>
             </label>
           </section>
@@ -154,11 +154,11 @@
             </p>
           </section>
           <section>
-            <label for="birthdate">
+            <label for="dateDeNaissance ">
               <p class="text-sm font-semibold">Date de naissance</p>
               <input
                 type="date"
-                name="birthdate"
+                name="dateDeNaissance "
                 class="border border-gray-300 rounded-md p-2 mt-2 w-full"
               />
             </label>
@@ -179,19 +179,11 @@
        * @param {HTMLFormElement} form
        */
       const seEnregistrer = (form) => {
-        MakeRequest("connecter", new FormData(form))
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.error) {
-              alert(data.error);
-            } else {
-              alert("Enregister avec succès");
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            alert("Une erreur est survenue");
-          });
+        MakeRequest("SeEnregistrer", new FormData(form)).then(
+          ({ personneId }) => {
+            window.location.href = "PageSeConnecter.html";
+          }
+        );
       };
     </script>
   </body>

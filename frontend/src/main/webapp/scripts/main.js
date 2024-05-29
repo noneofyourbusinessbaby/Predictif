@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:8080/frontend/ActionServelet?action=";
+const BACKEND_URL = "http://localhost:8080/frontend/ActionServelet";
 
 const LOCAL_STORAGE_KEY = "personneId";
 
@@ -36,9 +36,11 @@ const MakeRequest = async (action, form) => {
   form.forEach((value, key) => {
     params.append(key, value);
   });
+  
+  params.append("action", action)
 
   try {
-    return await fetch(`${BACKEND_URL}?${action}&${params}`, {
+    return await fetch(`${BACKEND_URL}${params}`, {
       method: "GET",
     });
   } catch (error) {
