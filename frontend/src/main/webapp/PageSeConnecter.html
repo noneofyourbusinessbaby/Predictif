@@ -92,17 +92,7 @@
        * @param {HTMLFormElement} form
        */
       const seConnecter = (form) => {
-        const jsonValue = Object.entries(form).map(([key, { value }]) => ({
-          [key]: value,
-        }));
-
-        MakeRequest("login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(jsonValue),
-        })
+        MakeRequest("connecter", new FormData(form))
           .then((res) => res.json())
           .then((data) => {
             if (data.error) {
