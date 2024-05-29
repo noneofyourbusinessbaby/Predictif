@@ -33,14 +33,14 @@ const Logout = () => {
 const MakeRequest = async (action, form) => {
   const params = new URLSearchParams();
 
+  params.append("action", action)
+
   form.forEach((value, key) => {
     params.append(key, value);
   });
   
-  params.append("action", action)
-
   try {
-    return await fetch(`${BACKEND_URL}${params}`, {
+    return await fetch(`${BACKEND_URL}?${params}`, {
       method: "GET",
     });
   } catch (error) {

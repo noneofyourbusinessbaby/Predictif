@@ -64,14 +64,14 @@
         </table>
         <footer>
           <a
-            href="history"
+            href="PageListeMediums.html"
             class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
             >Nouvelle consultation</a
           >
         </footer>
       </div>
     </main>
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
       const profilAstralToHTML = (key, value) => {
         const section = document.createElement("section");
 
@@ -101,13 +101,13 @@
             </a>
           </td>
           <td class="p-3">
-            <p>${props.dateDebut}</p>
+            <p>${props.dateDebut ? props.dateDebut : ''}</p>
           </td>
           <td class="p-3">
             <span
               class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
             >
-              ${props.status}
+              ${props.statut}
             </span>
           </td>
         `;
@@ -115,8 +115,7 @@
         return tr;
       };
 
-      document.addEventListener("load", () => {
-        MakeRequest("getSomething", new FormData())
+        MakeRequest("GetAccueilClientConnecte", new FormData())
           .then((response) => response.json())
           .then(({ profilAstral, consultations }) => {
             const profilAstralNode = document.getElementById("profilAstral");
@@ -125,17 +124,12 @@
               profilAstralNode.appendChild(profilAstralToHTML(key, value));
             });
 
-            const consultationHistorique = consultations.filter(
-              ({ status }) => status === "Validée"
-            );
-
             const consultationsNode = document.getElementById("consultations");
 
-            consultationHistorique.forEach((consultation) => {
+            consultations.forEach((consultation) => {
               consultationsNode.appendChild(consultationToHTML(consultation));
             });
           });
-      });
     </script>
   </body>
 </html>

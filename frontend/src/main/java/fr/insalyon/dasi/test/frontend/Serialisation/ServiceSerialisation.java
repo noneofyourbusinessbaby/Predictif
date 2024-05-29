@@ -83,6 +83,7 @@ public class ServiceSerialisation {
         jsonMedium.addProperty("mediumId", medium.getId());
 
         jsonMedium.addProperty("denominationMedium", medium.getDenomination());
+        jsonMedium.addProperty("mediumType", medium.getClass().getSimpleName().toLowerCase());
 
         jsonMedium.addProperty("genre", medium.getGenre());
 
