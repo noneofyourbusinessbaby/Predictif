@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <script src="scripts/main.js"></script>
+
+    <script src="tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="flex flex-col min-h-screen bg-gradient-to-t from-violet-100 to-gray-50"
+  >
+    <header
+      class="bg-gray-800 text-white py-2 px-12 flex justify-between sticky top-0"
+    >
+      <div class="flex items-center gap-x-3">
+        <span>
+          <img
+            src="logo.png"
+            alt="Predictif"
+            class="h-10 w-10"
+          />
+        </span>
+        <h1 class="text-xl">Predictif</h1>
+      </div>
+      <div class="flex items-center gap-x-3">
+        <a href="PageSeConnecter.html">Login</a>
+        <a
+          href="PageCreationCompte.html"
+          class="bg-indigo-600 py-2 px-5 rounded-md"
+          >Register</a
+        >
+      </div>
+    </header>
+    <main class="flex flex-col flex-grow">
+      <div class="m-auto flex flex-col gap-y-8">
+        <h1 class="font-semibold text-3xl text-center text-gray-900">
+          Se connecter
+        </h1>
+        <form
+          action="javascript:void(0)"
+          onsubmit="seConnecter(this)"
+          class="flex flex-col gap-y-8"
+        >
+          <article class="flex flex-col gap-y-5">
+            <section>
+              <label for="email">
+                <p class="text-sm font-semibold">Mail</p>
+                <input
+                  type="mail"
+                  name="email"
+                  placeholder="jean.dupont@gmail.com"
+                  class="border border-gray-300 rounded-md p-2 mt-2"
+                />
+              </label>
+              <p class="text-sm text-gray-500 mt-2">Entrez votre mail</p>
+            </section>
+            <section>
+              <label for="password">
+                <p class="text-sm font-semibold">Mot de passe</p>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="*********************"
+                  class="border border-gray-300 rounded-md p-2 mt-2"
+                />
+              </label>
+              <p class="text-sm text-gray-500 mt-2">
+                Entrez votre mot de passe
+              </p>
+            </section>
+          </article>
+          <footer class="flex justify-end">
+            <button
+              type="submit"
+              class="rounded-lg px-5 py-2 bg-indigo-600 text-white"
+            >
+              Connexion
+            </button>
+          </footer>
+        </form>
+      </div>
+    </main>
+    <script type="text/javascript">
+      /**
+       * @param {HTMLFormElement} form
+       */
+      const seConnecter = (form) => {
+        MakeRequest("SeConnecter", new FormData(form))
+          .then((res) => res.json())
+          .then((data) => {
+            Login(data.personneId, true);
+          });
+      };
+    </script>
+  </body>
+</html>

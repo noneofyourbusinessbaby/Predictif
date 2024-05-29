@@ -35,6 +35,6 @@ public class AuthentifierUtilisateurAction extends Action{
                 
         request.setAttribute("personne", user);
             
-        request.getSession().setAttribute("personneId", user.getId());
+        request.getSession(true).setAttribute("personneId", user.getId());
     }
 }

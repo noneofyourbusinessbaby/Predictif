@@ -25,10 +25,10 @@ public class RecupererResultatPredictionAction extends Action {
     public void execute(HttpServletRequest request) {
         
         Long employeId = Long.parseLong(request.getSession().getAttribute("personneId").toString());
-        
-        Integer amour = Integer.parseInt(request.getSession().getAttribute("amour").toString());
-        Integer sante = Integer.parseInt(request.getSession().getAttribute("sante").toString());
-        Integer travail = Integer.parseInt(request.getSession().getAttribute("travail").toString());
+              
+        Integer amour = Integer.parseInt(request.getParameter("amour"));
+        Integer sante = Integer.parseInt(request.getParameter("sante"));
+        Integer travail = Integer.parseInt(request.getParameter("travail"));
                     
         Employe employe = Services.getEmployeById(employeId);
         

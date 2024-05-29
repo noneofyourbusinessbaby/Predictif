@@ -16,6 +16,7 @@ import fr.insalyon.dasi.predictif.models.Medium;
 import fr.insalyon.dasi.predictif.models.Personne;
 import fr.insalyon.dasi.predictif.models.ProfilAstral;
 import fr.insalyon.dasi.predictif.models.Spirite;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,39 +25,54 @@ import java.util.List;
  */
 public class ServiceSerialisation {
     
+    private static String calculeStatut(Consultation consultation){
+        
+        if (consultation.getDateDebut() == null){
+            return "Pas commencé";
+        }
+        else {
+            if (consultation.getDateFin() == null){
+                return "En cours";
+            }
+            else {
+                return "Validée";
+            }
+        }
+    }
+    
     public static JsonObject toJsonObjectConsultationClient(Consultation consultation){
         
-        String stringStatut= "En cours";
 
-        if (consultation.getDateFin() != null && consultation.getCommentaire() != null) {
-            stringStatut = "Validée";
-        }
         
         JsonObject container = new JsonObject();
+        
         container.addProperty("denominationMedium", consultation.getMedium().getDenomination());
-        container.addProperty("mediumType", consultation.getMedium().getClass().getName());
-        container.addProperty("dateDebut", consultation.getDateDebut().toString());
-        container.addProperty("statut", stringStatut);
+        container.addProperty("mediumType", consultation.getMedium().getClass().getSimpleName());
+        
+        Date dateDebut = consultation.getDateDebut();
+        
+        container.addProperty("dateDebut", dateDebut == null ? null : dateDebut.toString());
+        
+        container.addProperty("statut", ServiceSerialisation.calculeStatut(consultation));
         
         return container;
     }
     
     public static JsonObject toJsonObjectConsultationEmploye(Consultation consultation) {
  
-        String stringStatut= "En cours";
-
-        if (consultation.getDateFin() != null && consultation.getCommentaire() != null) {
-            stringStatut = "Validée";
-        }
         
         JsonObject container = new JsonObject();
         container.addProperty("denominationMedium", consultation.getMedium().getDenomination());
-        container.addProperty("mediumType", consultation.getMedium().getClass().getName());
+        container.addProperty("mediumType", consultation.getMedium().getClass().getSimpleName());
         container.addProperty("prenomClient", consultation.getClient().getPrenom());
         container.addProperty("nomClient", consultation.getClient().getNom());
-        container.addProperty("dateDebut", consultation.getDateDebut().toString());
-        container.addProperty("statut", stringStatut);
         
+        Date dateDebut = consultation.getDateDebut();
+        
+        container.addProperty("dateDebut", dateDebut == null ? null : dateDebut.toString());
+        
+        container.addProperty("statut", ServiceSerialisation.calculeStatut(consultation));
+                
         return container;
     }
     
@@ -64,9 +80,9 @@ public class ServiceSerialisation {
         
         JsonObject jsonMedium = new JsonObject();
         
-        jsonMedium.addProperty("mediumID", medium.getId());
+        jsonMedium.addProperty("mediumId", medium.getId());
 
-        jsonMedium.addProperty("denomination", medium.getDenomination());
+        jsonMedium.addProperty("denominationMedium", medium.getDenomination());
 
         jsonMedium.addProperty("genre", medium.getGenre());
 
@@ -153,13 +169,11 @@ public class ServiceSerialisation {
         
         List<Consultation> listeConsultation = employe.getConsultations();
         
-        if (listeConsultation != null) {
-            
-            for (Consultation consultation : listeConsultation) {
-                listeConsultationJson.add(toJsonObjectConsultationEmploye(consultation));
-            }
+        for (Consultation consultation : listeConsultation) {
+            listeConsultationJson.add(toJsonObjectConsultationEmploye(consultation));
         }
-       return listeConsultationJson;
+       
+        return listeConsultationJson;
     }
 
     public static JsonObject toJsonObjectAideConsultation(List<String> predictions) {

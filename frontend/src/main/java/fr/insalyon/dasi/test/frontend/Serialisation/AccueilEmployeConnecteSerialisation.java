@@ -8,6 +8,7 @@ package fr.insalyon.dasi.test.frontend.Serialisation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import fr.insalyon.dasi.predictif.models.Consultation;
 import fr.insalyon.dasi.predictif.models.Employe;
 import java.io.PrintWriter;
@@ -32,7 +33,9 @@ public class AccueilEmployeConnecteSerialisation extends Serialisation {
             return;
         }
         
-        JsonArray container = ServiceSerialisation.toJsonObjectListeConsultation(employe);
+        JsonObject container = new JsonObject();
+        
+        container.add("consultations", ServiceSerialisation.toJsonObjectListeConsultation(employe));
         
         try (PrintWriter out = response.getWriter()) {
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <script src="scripts/main.js"></script>
+
+    <script src="tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="flex flex-col items-center min-h-screen bg-gradient-to-t from-violet-100 to-gray-50"
+  >
+    <header
+      class="bg-gray-800 text-white py-2 px-12 flex justify-between sticky top-0 w-full"
+    >
+      <div class="flex items-center gap-x-3">
+        <span>
+          <img
+            src="logo.png"
+            alt="Predictif"
+            class="h-10 w-10"
+          />
+        </span>
+        <h1 class="text-xl">Predictif</h1>
+      </div>
+      <div class="flex items-center gap-x-3">
+        <a href="login.html">Login </a>
+        <a
+          href="register.html"
+          class="bg-indigo-600 py-2 px-5 rounded-md"
+          >Register</a
+        >
+      </div>
+    </header>
+    <main class="flex flex-col container">
+      <h1 class="font-semibold text-3xl text-center text-gray-900">
+        Consultation des médiums
+      </h1>
+      <article class="flex flex-col container gap-y-8">
+        <section>
+          <h2 class="font-bold mb-3">Spirite</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <div
+              class="overflow-hidden grid grid-cols-4 bg-gray-700 border rounded-md"
+            >
+              <div class="relative col-span-1">
+                <img
+                  src="boule.png"
+                  alt="Spirite"
+                  class="absolute h-full object-cover"
+                />
+              </div>
+              <div class="col-span-3 flex flex-col p-3 justify-center min-h-48">
+                <div class="flex flex-col flex-grow justify-center">
+                  <h3 class="text-xl text-white font-semibold">Gwenaelle</h3>
+                  <div class="text-sm text-gray-400">
+                    <p>
+                      <span class="text-white">Support: </span>Boule de cristal
+                    </p>
+                    <p>
+                      <span class="text-white">Présentation: </span>Spécialiste
+                      des grandes conversations au-delà de TOUTES les frontières
+                    </p>
+                  </div>
+                </div>
+                <footer class="flex justify-end">
+                  <a class="rounded-lg px-5 py-2 bg-indigo-600 text-white">
+                    Demander consultation
+                  </a>
+                </footer>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+    </main>
+    <script type="text/javascript">
+      document.addEventListener("load", () => {
+        const mediums = fetch("http://localhost:8080/mediums")
+          .then((response) => response.json())
+          .then((mediums) => {
+            console.log(mediums);
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -99,7 +99,7 @@ public class Services {
             JpaUtil.creerContextePersistance();            
             personneConnecte =  personneDao.findByEmail(email);
             
-            if(personneConnecte == null | !personneConnecte.getMotDePasse().equals(motDePasse))
+            if(personneConnecte == null || !personneConnecte.getMotDePasse().equals(motDePasse))
             {
                 throw new PersonneException(IDENTIFIANTS_INVALIDES);
             }
