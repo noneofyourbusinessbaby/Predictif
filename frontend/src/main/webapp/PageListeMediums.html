@@ -30,9 +30,9 @@
         <h1 class="text-xl">Predictif</h1>
       </div>
       <div class="flex items-center gap-x-3">
-        <a href="login.html">Login </a>
+        <a href="PageSeConnecter.html">Login</a>
         <a
-          href="register.html"
+          href="PageCreationCompte.html"
           class="bg-indigo-600 py-2 px-5 rounded-md"
           >Register</a
         >
@@ -42,51 +42,99 @@
       <h1 class="font-semibold text-3xl text-center text-gray-900">
         Consultation des médiums
       </h1>
-      <article class="flex flex-col container gap-y-8">
-        <section>
-          <h2 class="font-bold mb-3">Spirite</h2>
-          <div class="grid grid-cols-2 gap-4">
-            <div
-              class="overflow-hidden grid grid-cols-4 bg-gray-700 border rounded-md"
-            >
-              <div class="relative col-span-1">
-                <img
-                  src="boule.png"
-                  alt="Spirite"
-                  class="absolute h-full object-cover"
-                />
-              </div>
-              <div class="col-span-3 flex flex-col p-3 justify-center min-h-48">
-                <div class="flex flex-col flex-grow justify-center">
-                  <h3 class="text-xl text-white font-semibold">Gwenaelle</h3>
-                  <div class="text-sm text-gray-400">
-                    <p>
-                      <span class="text-white">Support: </span>Boule de cristal
-                    </p>
-                    <p>
-                      <span class="text-white">Présentation: </span>Spécialiste
-                      des grandes conversations au-delà de TOUTES les frontières
-                    </p>
-                  </div>
-                </div>
-                <footer class="flex justify-end">
-                  <a class="rounded-lg px-5 py-2 bg-indigo-600 text-white">
-                    Demander consultation
-                  </a>
-                </footer>
-              </div>
-            </div>
-          </div>
-        </section>
-      </article>
+      <article
+        id="mediums"
+        class="flex flex-col container gap-y-8"
+      ></article>
     </main>
     <script type="text/javascript">
-      document.addEventListener("load", () => {
-        const mediums = fetch("http://localhost:8080/mediums")
+      const demanderConsultation = (form) => {
+        MakeRequest("demanderConsultation", new FormData(form))
           .then((response) => response.json())
-          .then((mediums) => {
-            console.log(mediums);
+          .then(({ consultationId }) => {
+            window.location.href = "PageAcceuilConnecte.html";
           });
+      };
+
+      const infoToHTML = (key, value) => {
+        return `
+          <p>
+            <span class="text-white">${key}: </span>${value}
+          </p>
+        `;
+      };
+
+      const mediumToHTML = ({ mediumId, denominationMedium, ...props }) => {
+        return `
+          <div
+            class="overflow-hidden grid grid-cols-4 bg-gray-700 border rounded-md"
+          >
+            <div class="relative col-span-1">
+              <img
+                src="boule.png"
+                alt="${denominationMedium}"
+                class="absolute h-full object-cover"
+              />
+            </div>
+            <div class="col-span-3 flex flex-col p-3 justify-center min-h-48">
+              <div class="flex flex-col flex-grow justify-center">
+                <h3 class="text-xl text-white font-semibold">${name}</h3>
+                <div class="text-sm text-gray-400">
+                  ${Object.entries(props)
+                    .map(([key, value]) => infoToHTML(key, value))
+                    .join("")}
+                </div>
+              </div>
+              <footer class="flex justify-end">
+                <form action="javascript:void(0)" onsubmit="demanderConsultation(this)">
+                  <value
+                    type="hidden"
+                    name="mediumId"
+                    value="${mediumId}"/>
+                  <button type="submit" class="rounded-lg px-5 py-2 bg-indigo-600 text-white">
+                    Demander consultation
+                  </button>
+                </form>
+              </footer>
+            </div>
+          </div>
+        `;
+      };
+
+      document.addEventListener("load", () => {
+        MakeRequest("mediums", new FormData())
+          .then((response) => response.json())
+          .then(({ mediums }) => {
+            const groupedMediums = Object.entries(mediums).reduce(
+              (prev, curr) => {
+                const { type, ...props } = curr;
+
+                prev[type].push(props);
+
+                return prev;
+              },
+              {
+                spirite: [],
+                astrologue: [],
+                cartomancien: [],
+              }
+            );
+          });
+
+        const mediumsNode = document.getElementById("mediums");
+
+        Object.entries(groupedMediums).forEach(([type, mediums]) => {
+          const section = document.createElement("section");
+
+          section.innerHTML = `
+            <h2 class="text-2xl text-gray-800 font-semibold">${type}</h2>
+            <div class="grid grid-cols-1 gap-y-8">
+              ${mediums.map(mediumToHTML).join("")}
+            </div>
+          `;
+
+          mediumsNode.appendChild(section);
+        });
       });
     </script>
   </body>

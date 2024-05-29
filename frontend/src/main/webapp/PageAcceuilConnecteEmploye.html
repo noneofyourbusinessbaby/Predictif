@@ -30,9 +30,9 @@
         <h1 class="text-xl">Predictif</h1>
       </div>
       <div class="flex items-center gap-x-3">
-        <a href="login.html">Login </a>
+        <a href="PageSeConnecter.html">Login</a>
         <a
-          href="register.html"
+          href="PageCreationCompte.html"
           class="bg-indigo-600 py-2 px-5 rounded-md"
           >Register</a
         >
@@ -40,6 +40,21 @@
     </header>
     <main class="flex flex-col container">
       <h1 class="font-semibold text-3xl text-gray-900 mb-8">Tableau de bord</h1>
+      <section>
+        <header>
+          <h2 class="font-semibold text-xl text-gray-900">
+            Consultation en cours
+          </h2>
+        </header>
+        <article id="consultationEnCours"></article>
+        <footer>
+          <a
+            href="history"
+            class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
+            >Démarrer consultation</a
+          >
+        </footer>
+      </section>
       <div class="flex flex-col gap-y-5">
         <header>
           <h2 class="font-semibold text-xl text-gray-900">
@@ -56,45 +71,82 @@
               <th class="w-2/12"></th>
             </tr>
           </thead>
-          <tbody class="bg-white">
-            <tr>
-              <td class="p-3">
-                <a href="profile">
-                  Mmm. Gwenaelle <span class="font-semibold">Spirite</span>
-                </a>
-              </td>
-              <td class="p-3">
-                <p>Mai 22 ,2024</p>
-              </td>
-              <td class="p-3">
-                <a href="profile">Jean Dupont</a>
-              </td>
-              <td class="p-3">
-                <span
-                  class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
-                >
-                  En attente
-                </span>
-              </td>
-              <td class="p-3">
-                <a
-                  href="history"
-                  class="bg-indigo-600 py-2 px-5 rounded-md text-white"
-                  >Voir fiche</a
-                >
-              </td>
-            </tr>
-          </tbody>
+          <tbody
+            class="bg-white"
+            id="consultationHistorique"
+          ></tbody>
         </table>
         <footer>
           <a
-            href="history"
+            href="PageListeMediums.html"
             class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
             >Nouvelle consultation</a
           >
         </footer>
       </div>
     </main>
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+      const consultationToHTML = (props) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td class="p-3">
+              <a href="profile">
+                ${props.denominationMedium} <span class="font-semibold">${props.mediumType}</span>
+              </a>
+            </td>
+            <td class="p-3">
+              <p>${props.dateDebut}</p>
+            </td>
+            <td class="p-3">
+              <a href="PageProfileClient.html?=${props.personneId}">${props.nomClient} ${props.prenomClient}</a>
+            </td>
+            <td class="p-3">
+              <span
+                class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
+              >
+                ${props.status}
+              </span>
+            </td>
+            <td class="p-3">
+              <a
+                href="history"
+                class="bg-indigo-600 py-2 px-5 rounded-md text-white"
+                >Voir fiche</a
+              >
+            </td>
+        `;
+
+        return tr;
+      };
+
+      document.addEventListener("load", () => {
+        MakeRequest("consultations", new FormData())
+          .then((response) => response.json())
+          .then(({ consultations }) => {
+            const consultationEnCours = consultations.find(
+              ({ status }) => status === "En cours"
+            );
+
+            document
+              .getElementById("consultationEnCours")
+              .appendChild(consultationToHTML(consultationEnCours));
+
+            const consultationHistorique = consultations.filter(
+              ({ status }) => status === "Validée"
+            );
+
+            const consultationHistoriqueNode = document.getElementById(
+              "consultationHistorique"
+            );
+
+            consultationHistorique.forEach((consultation) => {
+              consultationHistoriqueNode.appendChild(
+                consultationToHTML(consultation)
+              );
+            });
+          });
+      });
+    </script>
   </body>
 </html>

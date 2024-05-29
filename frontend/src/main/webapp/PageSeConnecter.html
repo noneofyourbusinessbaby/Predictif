@@ -30,12 +30,12 @@
         <h1 class="text-xl">Predictif</h1>
       </div>
       <div class="flex items-center gap-x-3">
-        <a href="login.html">Login </a>
+        <a href="PageSeConnecter.html">Login</a>
         <a
-          href="register.html"
+          href="PageCreationCompte.html"
           class="bg-indigo-600 py-2 px-5 rounded-md"
-          >Register
-        </a>
+          >Register</a
+        >
       </div>
     </header>
     <main class="flex flex-col flex-grow">
@@ -91,31 +91,13 @@
       /**
        * @param {HTMLFormElement} form
        */
-      
-      
       const seConnecter = (form) => {
-          
-          const Form = new FormData(form);
-          
-          const Params = new URLSearchParams();
-          
-          Form.forEach((value, key) => Params.append(key, value));
-          
-          const Url = "http://localhost:8080/frontend/ActionServelet?action=";
-          
-          fetch(Url + "connecter&" + Params.toString())
+        MakeRequest("SeConnecter", new FormData(form))
           .then((res) => res.json())
           .then((data) => {
-            if (data.error) {
-              alert(data.error);
-            } else {
-              alert("Connecté avec succès");
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            alert("Une erreur est survenue");
-          })};
+            Login(data.personneId, true);
+          });
+      };
     </script>
   </body>
 </html>
