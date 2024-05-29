@@ -17,9 +17,9 @@ import fr.insalyon.dasi.test.frontend.Action.GetMediumsAction;
 import fr.insalyon.dasi.test.frontend.Action.InscrireUtilisateurAction;
 import fr.insalyon.dasi.test.frontend.Action.RecupererProfilClient;
 import fr.insalyon.dasi.test.frontend.Action.RecupererProfilEmploye;
-import fr.insalyon.dasi.test.frontend.Serialisation.ConsultationSerialisation;
-import fr.insalyon.dasi.test.frontend.Serialisation.ProfilUtilisateurCompletSerialisation;
+import fr.insalyon.dasi.test.frontend.Serialisation.ProfilClientConsultationEnCoursSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ListeMediumsSerialisation;
+import fr.insalyon.dasi.test.frontend.Serialisation.ProfilUtilisateurBase;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,7 +60,7 @@ public class ActionServelet extends HttpServlet {
         
         response.setContentType("application/json");     
         
-        String todo = request.getParameter("todo");
+        String todo = request.getParameter("action");
         
         Services service = new Services();
         
@@ -77,25 +77,28 @@ public class ActionServelet extends HttpServlet {
                 new InscriptionClientSerialisation().appliquer(request, response);
                 break;
             }
-            // paratge en deux selon la demande
+            case "profilPersonneConnecte" : {
+            }
+           
+            /*            // paratge en deux selon la demande
             case "profilClient" : {
-                new RecupererProfilClient(service).execute(request);
-                new ProfilUtilisateurCompletSerialisation().appliquer(request, response);
-                break;
+            new RecupererProfilClient(service).execute(request);
+            new ProfilUtilisateurBase().appliquer(request, response);
+            break;
             }
             case "profilEmploye" : {
-                new RecupererProfilEmploye(service).execute(request);
-                new ProfilUtilisateurCompletSerialisation().appliquer(request, response);
-                break;
-            }
+            new RecupererProfilEmploye(service).execute(request);
+            new ProfilUtilisateurBase().appliquer(request, response);
+            break;
+            }*/
             case "getMediums" : {
                 new GetMediumsAction(service).execute(request);
                 new ListeMediumsSerialisation().appliquer(request, response);
                 break;
             }
-            case "getConsultationEnCours" : {
+            case "getConsultationEnCours" : { //reuqete pour deux pages 
                 new GetConsultationEnCoursAction(service).execute(request);
-                new ConsultationSerialisation().appliquer(request, response);     
+                new ProfilClientConsultationEnCoursSerialisation().appliquer(request, response);     
             } 
             case "creerConsultation" : {
                 new CreerConsultationAction(service).execute(request);

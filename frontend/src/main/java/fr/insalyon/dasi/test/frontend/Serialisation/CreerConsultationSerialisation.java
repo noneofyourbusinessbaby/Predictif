@@ -45,9 +45,10 @@ public class CreerConsultationSerialisation extends Serialisation{
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 gson.toJson(container, out);
 
-            } catch (IOException ex) {
-                // Logger.getLogger(ListeMediumsSerialisation.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (Exception e){
+                e.printStackTrace();
+                response.setStatus(HttpStatus.SC_METHOD_FAILURE);
+        }
         }
     }
     

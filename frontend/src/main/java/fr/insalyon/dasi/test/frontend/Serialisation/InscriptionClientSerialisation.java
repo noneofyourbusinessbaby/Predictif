@@ -24,5 +24,12 @@ public class InscriptionClientSerialisation extends Serialisation {
         if (client == null) {
             response.setStatus(HttpStatus.SC_BAD_REQUEST);
         }
+        
+        try{
+            
+        }catch (Exception e){
+            e.printStackTrace();
+            response.setStatus(HttpStatus.SC_METHOD_FAILURE);
+        }
    }
 }
