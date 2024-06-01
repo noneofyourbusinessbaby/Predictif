@@ -128,9 +128,10 @@
         </header>
         <div class="flex gap-x-12">
           <form
+            hidden
             action="javascript:void(0)"
             onsubmit="genererAide(this)"
-            class="flex gap-y-5 only_isConsulting"
+            class="flex gap-y-5 IfIsConsulting"
           >
             <label for="amour">
               <p class="text-sm font-semibold">Amour</p>
@@ -261,18 +262,24 @@
         return tr;
       };
 
+      const params = new URLSearchParams(document.location.search);
+
       document.addEventListener("load", () => {
-        if (document.location.search.includes("isConsulting")) {
+        if (params.get("consulting") === "true") {
           document
-            .getElementsByClassName("only_isConsulting")
+            .getElementsByClassName("IfIsConsulting")
             .forEach((element) => {
-              element.classList.remove("hidden");
+              element.hidden = false;
             });
         }
       });
 
       document.addEventListener("load", () => {
-        MakeRequest(`GetProfilClient?personneId={}`, new FormData())
+        const formData = new FormData();
+
+        formData.append("personneId", params.get("personneId"));
+
+        MakeRequest(`GetProfilClient`, formData)
           .then((response) => response.json())
           .then(({ profilAstral, consultations }) => {
             const profilAstralNode = document.getElementById("profilAstral");

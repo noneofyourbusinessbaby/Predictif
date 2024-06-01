@@ -46,8 +46,25 @@
             Consultation en cours
           </h2>
         </header>
-        <article id="consultationEnCours"></article>
-        <footer>
+        <table class="w-full text-left">
+          <thead class="bg-gray-50">
+            <tr class="border">
+              <th class="uppercase w-3/12 p-3">Medium</th>
+              <th class="uppercase w-3/12 p-3">Date</th>
+              <th class="uppercase w-2/12 p-3">Client</th>
+              <th class="uppercase w-2/12 p-3">Status</th>
+              <th class="w-2/12"></th>
+            </tr>
+          </thead>
+          <tbody
+            class="bg-white"
+            id="consultationEnCours"
+          ></tbody>
+        </table>
+        <footer
+          hidden
+          class="IfHasConsultation"
+        >
           <a
             href="history"
             class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
@@ -99,7 +116,7 @@
               <p>${props.dateDebut}</p>
             </td>
             <td class="p-3">
-              <a href="PageProfileClient.html?=${props.personneId}">${props.nomClient} ${props.prenomClient}</a>
+              <a href="PageProfileClient.html?consulting=true&personneId=${props.personneId}">${props.nomClient} ${props.prenomClient}</a>
             </td>
             <td class="p-3">
               <span
@@ -110,7 +127,7 @@
             </td>
             <td class="p-3">
               <a
-                href="history"
+                href="PageProfileClient.html?="consulting"
                 class="bg-indigo-600 py-2 px-5 rounded-md text-white"
                 >Voir fiche</a
               >
@@ -128,9 +145,17 @@
               ({ status }) => status === "En cours"
             );
 
-            document
-              .getElementById("consultationEnCours")
-              .appendChild(consultationToHTML(consultationEnCours));
+            if (consultationEnCours) {
+              document
+                .getElementsByClassName("IfHasConsultation")
+                .forEach((element) => {
+                  element.hidden = false;
+                });
+
+              document
+                .getElementById("consultationEnCours")
+                .appendChild(consultationToHTML(consultationEnCours));
+            }
 
             const consultationHistorique = consultations.filter(
               ({ status }) => status === "Validée"
