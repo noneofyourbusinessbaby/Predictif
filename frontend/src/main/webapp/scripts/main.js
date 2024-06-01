@@ -12,11 +12,16 @@ const Login = (personneId, isClient) => {
     LOCAL_STORAGE_KEY,
     JSON.stringify({
       isClient,
-      personneId,
+      personneId
     })
   );
-
-  window.location.href = "PageAcceuilConnect.html";
+   if (isClient)
+   {
+       window.location.href = "PageAcceuilConnecte.html";
+   }
+   else {
+        window.location.href = "PageAcceuilConnecteEmploye.html";
+   }
 };
 
 const Logout = () => {
