@@ -94,8 +94,8 @@
       const seConnecter = (form) => {
         MakeRequest("SeConnecter", new FormData(form))
           .then((res) => res.json())
-          .then((data) => {
-            Login(data.personneId, true);
+          .then(({ personneId, isClient }) => {
+            Login(personneId, isClient);
           });
       };
     </script>
