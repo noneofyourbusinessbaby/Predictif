@@ -65,6 +65,21 @@
       };
 
       const mediumToHTML = ({ mediumId, denominationMedium, ...props }) => {
+        const form = document.createElement("form");
+
+        form.action = "javascript:void(0)";
+        form.onsubmit = () => demanderConsultation(this);
+
+        form.innerHTML = `
+          <value
+            type="hidden"
+            name="mediumId"
+            value="${mediumId}"/>
+          <button type="submit" class="rounded-lg px-5 py-2 bg-indigo-600 text-white">
+            Demander consultation
+          </button>
+        `;
+
         return `
           <div
             class="overflow-hidden grid grid-cols-4 bg-gray-700 border rounded-md"
@@ -86,54 +101,46 @@
                 </div>
               </div>
               <footer class="flex justify-end">
-                <form action="javascript:void(0)" onsubmit="demanderConsultation(this)">
-                  <value
-                    type="hidden"
-                    name="mediumId"
-                    value="${mediumId}"/>
-                  <button type="submit" class="rounded-lg px-5 py-2 bg-indigo-600 text-white">
-                    Demander consultation
-                  </button>
-                </form>
+                ${form.outerHTML}
               </footer>
             </div>
           </div>
         `;
       };
 
-        MakeRequest("GetMediums", new FormData())
-          .then((response) => response.json())
-          .then(({ mediums }) => {
-            const groupedMediums = Object.values(mediums).reduce(
-              (prev, curr) => {
-                const { mediumType, ...props } = curr;
+      MakeRequest("GetMediums", new FormData())
+        .then((response) => response.json())
+        .then(({ mediums }) => {
+          const groupedMediums = Object.values(mediums).reduce(
+            (prev, curr) => {
+              const { mediumType, ...props } = curr;
 
-                prev[mediumType].push(props);
+              prev[mediumType].push(props);
 
-                return prev;
-              },
-              {
-                spirite: [],
-                astrologue: [],
-                cartomancien: []
-              }
-            );
-    
-            const mediumsNode = document.getElementById("mediums");
+              return prev;
+            },
+            {
+              spirite: [],
+              astrologue: [],
+              cartomancien: [],
+            }
+          );
 
-            Object.entries(groupedMediums).forEach(([type, mediums]) => {
-              const section = document.createElement("section");
+          const mediumsNode = document.getElementById("mediums");
 
-              section.innerHTML = `
+          Object.entries(groupedMediums).forEach(([type, mediums]) => {
+            const section = document.createElement("section");
+
+            section.innerHTML = `
                 <h2 class="text-2xl text-gray-800 font-semibold">${type}</h2>
                 <div class="grid grid-cols-1 gap-y-8">
                   ${mediums.map(mediumToHTML).join("")}
                 </div>
               `;
 
-              mediumsNode.appendChild(section);
-            });
+            mediumsNode.appendChild(section);
           });
+        });
     </script>
   </body>
 </html>
