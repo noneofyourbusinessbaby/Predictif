@@ -68,7 +68,7 @@
         const form = document.createElement("form");
 
         form.action = "javascript:void(0)";
-        form.onsubmit = () => demanderConsultation(this);
+        form.onsubmit = "demanderConsultation(this)";
 
         form.innerHTML = `
           <value
