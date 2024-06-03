@@ -68,44 +68,41 @@
         const form = document.createElement("form");
 
         form.action = "javascript:void(0)";
-        form.onsubmit = "demanderConsultation(this)";
+        form.addEventListener("submit", (m) =>
+          demanderConsultation(m.currentTarget)
+        );
 
         form.innerHTML = `
-          <value
-            type="hidden"
-            name="mediumId"
-            value="${mediumId}"/>
+          <input type="hidden" name="mediumId" value="${mediumId}"/>
           <button type="submit" class="rounded-lg px-5 py-2 bg-indigo-600 text-white">
             Demander consultation
           </button>
         `;
 
-        return `
-          <div
-            class="overflow-hidden grid grid-cols-4 bg-gray-700 border rounded-md"
-          >
-            <div class="relative col-span-1">
-              <img
-                src="boule.png"
-                alt="${denominationMedium}"
-                class="absolute h-full object-cover"
-              />
-            </div>
-            <div class="col-span-3 flex flex-col p-3 justify-center min-h-48">
-              <div class="flex flex-col flex-grow justify-center">
-                <h3 class="text-xl text-white font-semibold">${name}</h3>
-                <div class="text-sm text-gray-400">
-                  ${Object.entries(props)
-                    .map(([key, value]) => infoToHTML(key, value))
-                    .join("")}
-                </div>
+        const container = document.createElement("div");
+        container.className =
+          "overflow-hidden grid grid-cols-4 bg-gray-700 border rounded-md";
+
+        container.innerHTML = `
+          <div class="relative col-span-1">
+            <img src="boule.png" alt="${denominationMedium}" class="absolute h-full object-cover" />
+          </div>
+          <div class="col-span-3 flex flex-col p-3 justify-center min-h-48">
+            <div class="flex flex-col flex-grow justify-center">
+              <h3 class="text-xl text-white font-semibold">${denominationMedium}</h3>
+              <div class="text-sm text-gray-400">
+                ${Object.entries(props)
+                  .map(([key, value]) => infoToHTML(key, value))
+                  .join("")}
               </div>
-              <footer class="flex justify-end">
-                ${form.outerHTML}
-              </footer>
             </div>
+            <footer class="flex justify-end"></footer>
           </div>
         `;
+
+        container.querySelector("footer").appendChild(form);
+
+        return container.outerHTML;
       };
 
       MakeRequest("GetMediums", new FormData())
