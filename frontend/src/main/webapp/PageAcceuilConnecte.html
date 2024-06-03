@@ -57,7 +57,10 @@
             class="bg-white"
           ></tbody>
         </table>
-        <footer>
+        <footer
+          hidden
+          class="IfNotHasConsultation"
+        >
           <a
             href="PageListeMediums.html"
             class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
@@ -130,6 +133,12 @@
           consultations.forEach((consultation) => {
             consultationsNode.appendChild(consultationToHTML(consultation));
           });
+
+          if (consultations.some(({ status }) => status === "Validée")) {
+            document
+              .getElementsByClassName("IfNotHasConsultation")
+              .item().hidden = false;
+          }
         });
     </script>
   </body>

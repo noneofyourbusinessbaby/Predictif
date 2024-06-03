@@ -30,7 +30,12 @@
         <h1 class="text-xl">Predictif</h1>
       </div>
       <div class="flex items-center gap-x-3">
-        <button onclick="Logout()">Déconnexion</button>
+        <button
+          onclick="Logout()"
+          class="rounded-lg px-5 py-2 bg-indigo-600 text-white"
+        >
+          Déconnexion
+        </button>
       </div>
     </header>
     <main class="flex flex-col container">
@@ -115,7 +120,10 @@
           </label>
         </div>
       </div>
-      <div class="flex flex-col gap-y-5">
+      <div
+        hidden
+        class="flex flex-col gap-y-5 IfIsConsulting"
+      >
         <header>
           <h2 class="font-semibold text-3xl text-center text-gray-900">
             Aide à la prédiction
@@ -123,10 +131,9 @@
         </header>
         <div class="flex gap-x-12">
           <form
-            hidden
             action="javascript:void(0)"
             onsubmit="genererAide(this)"
-            class="flex gap-y-5 IfIsConsulting"
+            class="flex gap-y-5"
           >
             <label for="amour">
               <p class="text-sm font-semibold">Amour</p>
@@ -188,8 +195,37 @@
           ></tbody>
         </table>
       </div>
+      <footer
+        hidden
+        class="IfIsConsulting"
+      >
+        <form
+          action="javascript:void(0)"
+          onsubmit="terminerConsultation(this)"
+        >
+          <input
+            type="text"
+            name="personneId"
+          />
+          <button
+            type="submit"
+            class="rounded-lg px-5 py-2 bg-indigo-600 text-white"
+          >
+            Terminer la consultation
+          </button>
+        </form>
+      </footer>
     </main>
     <script type="text/javascript">
+      /***
+       * @param {HTMLFormElement} form
+       */
+      const terminerConsultation = (form) => {
+        MakeRequest("TerminerConsultation", new FormData(form)).then(() => {
+          window.location.href = "PageAccueilConnecte.html";
+        });
+      };
+
       /***
        * @param {HTMLFormElement} form
        */
@@ -267,6 +303,14 @@
             .forEach((element) => {
               element.hidden = false;
             });
+
+          const elements = document.getElementsByName("personneId");
+
+          elements.forEach((element) => {
+            if (element instanceof HTMLInputElement) {
+              element.value = personneId;
+            }
+          });
         }
       });
 

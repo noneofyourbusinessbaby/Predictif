@@ -61,7 +61,8 @@
           class="IfHasConsultation"
         >
           <a
-            href="history"
+            id="startConsultation"
+            href="PageProfilClient.html?consulting=true&personneId="
             class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
             >Démarrer consultation</a
           >
@@ -141,6 +142,12 @@
             );
 
             if (consultationEnCours) {
+              const redirection = document.getElementById("startConsultation");
+
+              if (redirection instanceof HTMLAnchorElement) {
+                redirection.href += consultationEnCours.personneId;
+              }
+
               document
                 .getElementsByClassName("IfHasConsultation")
                 .forEach((element) => {
