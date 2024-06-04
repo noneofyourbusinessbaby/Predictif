@@ -48,13 +48,20 @@
       ></article>
     </main>
     <script type="text/javascript">
-      const demanderConsultation = (form) => {
-        MakeRequest("CreateConsultation", new FormData(form))
-          .then((response) => response.json())
-          .then(({ consultationId }) => {
-            window.location.href = "PageAcceuilConnecte.html";
-          });
-      };
+      
+        const demanderConsultation = ( mediumId ) => {
+            
+            const formData = new FormData();
+            
+            formData.append("mediumId", mediumId);
+
+            
+            MakeRequest("CreateConsultation", formData)
+              .then((response) => response.json())
+              .then(({ consultationId }) => {
+                window.location.href = "PageAcceuilConnecte.html";
+              });
+        };
 
       const infoToHTML = (key, value) => {
         return `
@@ -65,21 +72,9 @@
       };
 
       const mediumToHTML = ({ mediumId, denominationMedium, ...props }) => {
-        const form = document.createElement("form");
-
-        form.action = "javascript:void(0)";
-        form.addEventListener("submit", (m) =>
-          demanderConsultation(m.currentTarget)
-        );
-
-        form.innerHTML = `
-          <input type="hidden" name="mediumId" value="${mediumId}"/>
-          <button type="submit" class="rounded-lg px-5 py-2 bg-indigo-600 text-white">
-            Demander consultation
-          </button>
-        `;
-
+          
         const container = document.createElement("div");
+        
         container.className =
           "overflow-hidden grid grid-cols-4 bg-gray-700 border rounded-md";
 
@@ -96,11 +91,13 @@
                   .join("")}
               </div>
             </div>
-            <footer class="flex justify-end"></footer>
+            <footer class="flex justify-end">
+                <button type="submit" class="rounded-lg px-5 py-2 bg-indigo-600 text-white" onclick="demanderConsultation(${mediumId})">
+                  Demander consultation
+                </button>
+            </footer>
           </div>
         `;
-
-        container.querySelector("footer").appendChild(form);
 
         return container.outerHTML;
       };
@@ -137,6 +134,8 @@
 
             mediumsNode.appendChild(section);
           });
+          
+
         });
     </script>
   </body>

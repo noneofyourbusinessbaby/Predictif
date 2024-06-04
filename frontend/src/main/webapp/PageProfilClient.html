@@ -314,14 +314,13 @@
         }
       });
 
-      document.addEventListener("load", () => {
         const formData = new FormData();
 
         formData.append("personneId", params.get("personneId"));
 
-        MakeRequest(`GetProfilClient`, formData)
+        MakeRequest(`GetConsultationEnCours`, formData)
           .then((response) => response.json())
-          .then(({ profilAstral, consultations }) => {
+          .then(({ profilAstral,profilClient, consultations }) => {
             const profilAstralNode = document.getElementById("profilAstral");
 
             Object.entries(profilAstral).forEach(([key, value]) => {
@@ -342,7 +341,6 @@
               );
             });
           });
-      });
     </script>
   </body>
 </html>

@@ -76,7 +76,7 @@ public class ActionServelet extends HttpServlet {
                 new AuthentifierUtilisateurAction(service).execute(request);
                 new ConnexionUtilisateurSerialisation().appliquer(request, response); // Si la personne n'est pas logged on a un null qui est renvoyé
                 break;  
-            }
+            } //ok
            
            // http://localhost:8080/frontend/ActionServelet?action=SeEnregistrer&prenom=Kiki&nom=hprt&email=kiki@kik2i&password=123456789&genre=M&dateNaissance=07/10/96%204:5%20PM,%20PDT&telephone=01236547&adressePostale=69100
             case "SeEnregistrer" : {

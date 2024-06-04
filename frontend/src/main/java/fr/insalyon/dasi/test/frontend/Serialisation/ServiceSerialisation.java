@@ -28,7 +28,7 @@ public class ServiceSerialisation {
     private static String calculeStatut(Consultation consultation){
         
         if (consultation.getDateDebut() == null){
-            return "Pas commencé";
+            return "Pas commence";
         }
         else {
             if (consultation.getDateFin() == null){

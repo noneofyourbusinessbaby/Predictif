@@ -57,6 +57,7 @@
             class="bg-white"
           ></tbody>
         </table>
+          
         <footer
           hidden
           class="IfNotHasConsultation"
@@ -134,11 +135,8 @@
             consultationsNode.appendChild(consultationToHTML(consultation));
           });
 
-          if (consultations.some(({ status }) => status === "Validée")) {
-            document
-              .getElementsByClassName("IfNotHasConsultation")
-              .item().hidden = false;
-          }
+          document
+            .getElementsByClassName("IfNotHasConsultation")[0].hidden = consultations.some(({ status }) => status === "En cours");
         });
     </script>
   </body>

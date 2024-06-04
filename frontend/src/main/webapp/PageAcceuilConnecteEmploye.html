@@ -89,16 +89,9 @@
             id="consultationHistorique"
           ></tbody>
         </table>
-        <footer>
-          <a
-            href="PageListeMediums.html"
-            class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
-            >Nouvelle consultation</a
-          >
-        </footer>
       </div>
     </main>
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
       const consultationToHTML = (props) => {
         const tr = document.createElement("tr");
 
@@ -118,12 +111,12 @@
               <span
                 class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
               >
-                ${props.status}
+                ${props.statut}
               </span>
             </td>
             <td class="p-3">
               <a
-                href="PageProfileClient.html?="consulting"
+                href="PageProfilClient.html"
                 class="bg-indigo-600 py-2 px-5 rounded-md text-white"
                 >Voir fiche</a
               >
@@ -133,12 +126,11 @@
         return tr;
       };
 
-      document.addEventListener("load", () => {
-        MakeRequest("consultations", new FormData())
+        MakeRequest("GetAcueilEmployeConnecte", new FormData())
           .then((response) => response.json())
           .then(({ consultations }) => {
             const consultationEnCours = consultations.find(
-              ({ status }) => status === "En cours"
+              ({ statut }) => statut === "En cours" || statut === "Pas commence"
             );
 
             if (consultationEnCours) {
@@ -149,10 +141,7 @@
               }
 
               document
-                .getElementsByClassName("IfHasConsultation")
-                .forEach((element) => {
-                  element.hidden = false;
-                });
+                .getElementsByClassName("IfHasConsultation")[0].hidden = false;
 
               document
                 .getElementById("consultationEnCours")
@@ -160,7 +149,7 @@
             }
 
             const consultationHistorique = consultations.filter(
-              ({ status }) => status === "Validée"
+              ({ statut }) => statut === "Validée"
             );
 
             const consultationHistoriqueNode = document.getElementById(
@@ -173,7 +162,6 @@
               );
             });
           });
-      });
     </script>
   </body>
 </html>

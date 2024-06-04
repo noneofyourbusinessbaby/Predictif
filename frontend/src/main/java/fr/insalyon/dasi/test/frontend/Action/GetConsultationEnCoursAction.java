@@ -8,6 +8,7 @@ package fr.insalyon.dasi.test.frontend.Action;
 import fr.insalyon.dasi.predictif.models.Consultation;
 import fr.insalyon.dasi.predictif.models.Employe;
 import fr.insalyon.dasi.predictif.services.Services;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -30,7 +31,9 @@ public class GetConsultationEnCoursAction extends Action {
         if (employe == null) return;
         
         Consultation consultationEncours = Services.getConsultationEnCours(employe);
+        
             
         request.setAttribute("consultationEnCours", consultationEncours);      
+        request.setAttribute("employe", employe);      
     }
 }

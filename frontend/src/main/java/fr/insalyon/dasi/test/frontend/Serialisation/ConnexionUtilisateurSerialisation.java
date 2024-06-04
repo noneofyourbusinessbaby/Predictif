@@ -8,6 +8,7 @@ package fr.insalyon.dasi.test.frontend.Serialisation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import fr.insalyon.dasi.predictif.models.Client;
 import fr.insalyon.dasi.predictif.models.Personne;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,8 @@ public class ConnexionUtilisateurSerialisation extends Serialisation {
            
            return;
         }
+        
+        container.addProperty("isClient", personne instanceof Client);
            
         container.addProperty("personneId", personne.getId());
         

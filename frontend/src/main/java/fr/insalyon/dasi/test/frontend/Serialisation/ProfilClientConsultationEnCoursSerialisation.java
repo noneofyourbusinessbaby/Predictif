@@ -10,7 +10,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import fr.insalyon.dasi.predictif.models.Client;
 import fr.insalyon.dasi.predictif.models.Consultation;
+import fr.insalyon.dasi.predictif.models.Employe;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpStatus;
@@ -25,7 +27,7 @@ public class ProfilClientConsultationEnCoursSerialisation extends Serialisation{
     public void appliquer(HttpServletRequest request, HttpServletResponse response) {
         
          Consultation consultation = (Consultation) request.getAttribute("consultationEnCours");
-         
+         Employe employe = (Employe) request.getAttribute("employe");
          if (consultation == null){
              response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
              return;
@@ -37,6 +39,7 @@ public class ProfilClientConsultationEnCoursSerialisation extends Serialisation{
 
         container.add("profilAstral", ServiceSerialisation.toJsonProfilAstral(client));
         container.add("profilClient", ServiceSerialisation.toJsonObjectPersonne(client));
+        container.add("consultations", ServiceSerialisation.toJsonObjectListeConsultation(employe));
 
         try (PrintWriter out = response.getWriter()) {
 
