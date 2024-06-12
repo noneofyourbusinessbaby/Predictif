@@ -5,6 +5,7 @@
  */
 package fr.insalyon.dasi.test.frontend.Action;
 
+import fr.insalyon.dasi.predictif.models.Client;
 import fr.insalyon.dasi.predictif.models.Consultation;
 import fr.insalyon.dasi.predictif.models.Employe;
 import fr.insalyon.dasi.predictif.services.Services;
@@ -15,25 +16,24 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author nhajjhassa
  */
-public class GetConsultationEnCoursAction extends Action {
+public class RecupererFicheClientAction extends Action{
 
-    public GetConsultationEnCoursAction(Services service) {
+    public RecupererFicheClientAction(Services service) {
         super(service);
     }
 
     @Override
     public void execute(HttpServletRequest request) {
         
-        Long personneId = Long.parseLong(request.getSession().getAttribute("personneId").toString());
+        if (request.getParameter("personneId") == null) return;
         
-        Employe employe = Services.getEmployeById(personneId);
+        Long personneId = Long.parseLong(request.getParameter("personneId"));
                 
-        if (employe == null) return;
+        Client client = Services.getClientById(personneId);
         
-        Consultation consultationEncours = Services.getConsultationEnCours(employe);
+        if (client == null ) return;
         
-        if (consultationEncours == null) return;
-        
-        Services.commencerConsultation(consultationEncours.getId());
-    }
+        request.setAttribute("client",client);
+      }
+    
 }

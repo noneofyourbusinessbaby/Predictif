@@ -48,12 +48,15 @@ public class ServiceSerialisation {
         
         container.addProperty("denominationMedium", consultation.getMedium().getDenomination());
         container.addProperty("mediumType", consultation.getMedium().getClass().getSimpleName());
+        container.addProperty("personneId", consultation.getClient().getId());
         
         Date dateDebut = consultation.getDateDebut();
         
         container.addProperty("dateDebut", dateDebut == null ? null : dateDebut.toString());
         
         container.addProperty("statut", ServiceSerialisation.calculeStatut(consultation));
+        container.addProperty("commentaire", consultation.getCommentaire());
+        container.addProperty("consultationId", consultation.getId());
         
         return container;
     }
@@ -66,12 +69,15 @@ public class ServiceSerialisation {
         container.addProperty("mediumType", consultation.getMedium().getClass().getSimpleName());
         container.addProperty("prenomClient", consultation.getClient().getPrenom());
         container.addProperty("nomClient", consultation.getClient().getNom());
+        container.addProperty("personneId", consultation.getClient().getId());
         
         Date dateDebut = consultation.getDateDebut();
         
         container.addProperty("dateDebut", dateDebut == null ? null : dateDebut.toString());
         
         container.addProperty("statut", ServiceSerialisation.calculeStatut(consultation));
+        container.addProperty("consultationId", consultation.getId());
+
                 
         return container;
     }
@@ -122,6 +128,7 @@ public class ServiceSerialisation {
             Client client = (Client) personne;
             userJson.addProperty("adressePostale", client.getAdressePostale());
             userJson.addProperty("dateNaissance", client.getDateDeNaissance().toString());
+     
 
         }
         else if (personne instanceof Employe){

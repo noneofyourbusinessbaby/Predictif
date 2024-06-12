@@ -26,7 +26,7 @@ const Login = (personneId, isClient) => {
 
 const Logout = () => {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
-  window.location.href = "PageAcceuilNonConnect.html";
+  window.location.href = "PageSeConnecter.html";
 };
 
 /**

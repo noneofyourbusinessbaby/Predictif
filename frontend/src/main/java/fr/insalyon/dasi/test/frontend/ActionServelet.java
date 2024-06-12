@@ -8,23 +8,25 @@ package fr.insalyon.dasi.test.frontend;
 import fr.insalyon.dasi.test.frontend.Action.RecupererAccueilClientConnecte;
 import fr.insalyon.dasi.test.frontend.Serialisation.CreerConsultationSerialisation;
 import fr.insalyon.dasi.test.frontend.Action.CreerConsultationAction;
-import fr.insalyon.dasi.test.frontend.Action.GetConsultationEnCoursAction;
 import fr.insalyon.dasi.test.frontend.Serialisation.InscriptionClientSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ConnexionUtilisateurSerialisation;
 import fr.insalyon.dasi.predictif.persistence.JpaUtil;
 import fr.insalyon.dasi.predictif.services.Services;
 import fr.insalyon.dasi.test.frontend.Action.AuthentifierUtilisateurAction;
+import fr.insalyon.dasi.test.frontend.Action.DemarrerSeanceAction;
 import fr.insalyon.dasi.test.frontend.Action.GetMediumsAction;
 import fr.insalyon.dasi.test.frontend.Action.InscrireUtilisateurAction;
 import fr.insalyon.dasi.test.frontend.Action.RecupererAcueilEmployeConnecteAction;
+import fr.insalyon.dasi.test.frontend.Action.RecupererFicheClientAction;
 import fr.insalyon.dasi.test.frontend.Action.RecupererProfilConnecteAction;
 import fr.insalyon.dasi.test.frontend.Action.RecupererResultatPredictionAction;
+import fr.insalyon.dasi.test.frontend.Action.TerminerSeanceAction;
 import fr.insalyon.dasi.test.frontend.Serialisation.AccueilClientConnecteSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.AccueilEmployeConnecteSerialisation;
-import fr.insalyon.dasi.test.frontend.Serialisation.ProfilClientConsultationEnCoursSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ListeMediumsSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.PredictionResultatSerialisation;
 import fr.insalyon.dasi.test.frontend.Serialisation.ProfilUtilisateurBase;
+import fr.insalyon.dasi.test.frontend.Serialisation.RecupererFicheClientSerialisation;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -103,6 +105,20 @@ public class ActionServelet extends HttpServlet {
                 new AccueilEmployeConnecteSerialisation().appliquer(request,response);
                 break;
             }
+            case "DemarrerSeance" : {
+                new DemarrerSeanceAction(service).execute(request);
+                // new DemarrerSeanceSerialisation().appliquer(request, response);
+                break;
+            }
+            case "TerminerSeance" : {
+                new TerminerSeanceAction(service).execute(request);
+                // new TerminerSeanceSerialisation().appliquer(request, response);
+                break;
+            }
+            case "GetFicheClient" : {
+                new RecupererFicheClientAction(service).execute(request);
+                new RecupererFicheClientSerialisation().appliquer(request, response);
+            }
             // http://localhost:8080/frontend/ActionServelet?action=GetPredictions&amour=1&sante=1&travail=1
             case "GetPredictions" : {
                 new RecupererResultatPredictionAction(service).execute(request);
@@ -115,12 +131,6 @@ public class ActionServelet extends HttpServlet {
                 new ListeMediumsSerialisation().appliquer(request, response);
                 break;
             }
-            // http://localhost:8080/frontend/ActionServelet?action=GetConsultationEnCours
-            case "GetConsultationEnCours" : { //reuqete pour deux pages 
-                new GetConsultationEnCoursAction(service).execute(request);
-                new ProfilClientConsultationEnCoursSerialisation().appliquer(request, response);     
-                break;
-            } 
             // http://localhost:8080/frontend/ActionServelet?action=CreateConsultation&mediumId=1
             case "CreateConsultation" : {
                 new CreerConsultationAction(service).execute(request);
@@ -131,9 +141,7 @@ public class ActionServelet extends HttpServlet {
                 break;
             }
         }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    }    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

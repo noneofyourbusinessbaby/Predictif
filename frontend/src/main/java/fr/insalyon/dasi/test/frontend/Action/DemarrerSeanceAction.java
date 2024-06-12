@@ -8,16 +8,15 @@ package fr.insalyon.dasi.test.frontend.Action;
 import fr.insalyon.dasi.predictif.models.Consultation;
 import fr.insalyon.dasi.predictif.models.Employe;
 import fr.insalyon.dasi.predictif.services.Services;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author nhajjhassa
  */
-public class GetConsultationEnCoursAction extends Action {
+public class DemarrerSeanceAction extends Action{
 
-    public GetConsultationEnCoursAction(Services service) {
+    public DemarrerSeanceAction(Services service) {
         super(service);
     }
 
@@ -35,5 +34,7 @@ public class GetConsultationEnCoursAction extends Action {
         if (consultationEncours == null) return;
         
         Services.commencerConsultation(consultationEncours.getId());
+        
     }
+    
 }

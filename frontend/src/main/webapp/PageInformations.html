@@ -28,6 +28,17 @@
           />
         </span>
         <h1 class="text-xl">Predictif</h1>
+        <div class="flex gap-x-3">
+            <a href="PageInformations.html">
+                Informations
+            </a>
+            <a href="PageAcceuilConnecte.html">
+                Accueil Client
+            </a>
+            <a href="PageAcceuilConnecteEmploye.html">
+                Accueil Employe
+            </a>
+        </div>
       </div>
       <div class="flex items-center gap-x-3">
         <button onclick="Logout()">Déconnexion</button>
@@ -111,15 +122,13 @@
       </div>
     </main>
     <script type="text/javascript">
-      document.addEventListener("load", () => {
         MakeRequest("GetProfilPersonneConnecte", new FormData())
           .then((res) => res.json())
-          .then((data) => {
-            document.getElementsByTagName("input").forEach((input) => {
-              input.value = data[input.name];
+          .then(({ personne }) => {
+            Array.from(document.getElementsByTagName("input")).forEach((input) => {
+              input.value = personne[input.name];
             });
           });
-      });
     </script>
   </body>
 </html>

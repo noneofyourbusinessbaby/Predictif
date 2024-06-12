@@ -28,6 +28,17 @@
           />
         </span>
         <h1 class="text-xl">Predictif</h1>
+        <div class="flex gap-x-3">
+            <a href="PageInformations.html">
+                Informations
+            </a>
+            <a href="PageAcceuilConnecte.html">
+                Accueil Client
+            </a>
+            <a href="PageAcceuilConnecteEmploye.html">
+                Accueil Employe
+            </a>
+        </div>
       </div>
       <div class="flex items-center gap-x-3">
         <button onclick="Logout()">Déconnexion</button>
@@ -56,16 +67,16 @@
             id="consultationEnCours"
           ></tbody>
         </table>
-        <footer
-          hidden
-          class="IfHasConsultation"
+        <footer          
         >
-          <a
-            id="startConsultation"
-            href="PageProfilClient.html?consulting=true&personneId="
-            class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block"
-            >Démarrer consultation</a
-          >
+            <form action="javascript:void(0)">
+                <button
+                  onclick="demarrerConsultation()"
+                  id="startConsultation"
+                  class="bg-indigo-600 py-2 px-5 rounded-md text-white inline-block IfHasConsultation hidden"
+                  >Démarrer consultation</button>                
+            </form>
+
         </footer>
       </section>
       <div class="flex flex-col gap-y-5">
@@ -91,7 +102,17 @@
         </table>
       </div>
     </main>
-    <script type="text/javascript" defer>
+    <script type="text/javascript">
+        
+        let consultationId = null;
+        let personneId = null;
+        
+      const demarrerConsultation = () => {
+          MakeRequest("DemarrerSeance", new FormData()).then(() => {
+              window.location.href =`PageProfilClient.html?consulting=true&personneId=${personneId}&consultationId=${consultationId}`;
+          });
+      }
+        
       const consultationToHTML = (props) => {
         const tr = document.createElement("tr");
 
@@ -102,10 +123,10 @@
               </a>
             </td>
             <td class="p-3">
-              <p>${props.dateDebut}</p>
+              <p>${props.dateDebut ?? ""}</p>
             </td>
             <td class="p-3">
-              <a href="PageProfileClient.html?consulting=true&personneId=${props.personneId}">${props.nomClient} ${props.prenomClient}</a>
+              <a href="PageProfileClient.html">${props.nomClient} ${props.prenomClient}</a>
             </td>
             <td class="p-3">
               <span
@@ -116,7 +137,7 @@
             </td>
             <td class="p-3">
               <a
-                href="PageProfilClient.html"
+                href="PageProfilClient.html?consulting=${props.statut.includes("En")}&consultationId=${props.consultationId}&personneId=${props.personneId}"
                 class="bg-indigo-600 py-2 px-5 rounded-md text-white"
                 >Voir fiche</a
               >
@@ -132,16 +153,17 @@
             const consultationEnCours = consultations.find(
               ({ statut }) => statut === "En cours" || statut === "Pas commence"
             );
-
+    
             if (consultationEnCours) {
-              const redirection = document.getElementById("startConsultation");
+                
+                consultationId = consultationEnCours.consultationId;
+                personneId = consultationEnCours.personneId;
+                
+                    if (consultationEnCours.statut.includes("Pas")){
+                                      document
+                .getElementsByClassName("IfHasConsultation")[0].classList.remove("hidden");        
+                    }
 
-              if (redirection instanceof HTMLAnchorElement) {
-                redirection.href += consultationEnCours.personneId;
-              }
-
-              document
-                .getElementsByClassName("IfHasConsultation")[0].hidden = false;
 
               document
                 .getElementById("consultationEnCours")
@@ -149,18 +171,19 @@
             }
 
             const consultationHistorique = consultations.filter(
-              ({ statut }) => statut === "Validée"
+              ({ statut }) => statut.includes("Valid")
             );
 
             const consultationHistoriqueNode = document.getElementById(
               "consultationHistorique"
             );
 
-            consultationHistorique.forEach((consultation) => {
-              consultationHistoriqueNode.appendChild(
-                consultationToHTML(consultation)
-              );
-            });
+            if (consultationHistorique)
+                consultationHistorique.forEach((consultation) => {
+                  consultationHistoriqueNode.appendChild(
+                    consultationToHTML(consultation)
+                  );
+                });
           });
     </script>
   </body>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -28,6 +28,17 @@
           />
         </span>
         <h1 class="text-xl">Predictif</h1>
+        <div class="flex gap-x-3">
+            <a href="PageInformations.html">
+                Informations
+            </a>
+            <a href="PageAcceuilConnecte.html">
+                Accueil Client
+            </a>
+            <a href="PageAcceuilConnecteEmploye.html">
+                Accueil Employe
+            </a>
+        </div>
       </div>
       <div class="flex items-center gap-x-3">
         <button onclick="Logout()">Déconnexion</button>
@@ -48,8 +59,9 @@
           <thead class="bg-gray-50">
             <tr class="border">
               <th class="uppercase w-1/4 p-3">Medium</th>
-              <th class="w-2/4 p-3">Date</th>
-              <th class="uppercase w-1/4 p-3">Status</th>
+              <th class="w-1/4 p-3">Date</th>
+            <th class="w-1/4 p-3">Commentaire</th>
+                <th class="uppercase w-1/4 p-3">Status</th>
             </tr>
           </thead>
           <tbody
@@ -109,6 +121,9 @@
             <p>${props.dateDebut ? props.dateDebut : ""}</p>
           </td>
           <td class="p-3">
+            <p>${props.commentaire ?? ""}</p>
+          </td>
+          <td class="p-3">
             <span
               class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
             >
@@ -136,7 +151,7 @@
           });
 
           document
-            .getElementsByClassName("IfNotHasConsultation")[0].hidden = consultations.some(({ status }) => status === "En cours");
+            .getElementsByClassName("IfNotHasConsultation")[0].hidden = consultations.some(({ statut }) => statut === "En cours" || statut.includes("Pas"));
         });
     </script>
   </body>

@@ -28,14 +28,22 @@
           />
         </span>
         <h1 class="text-xl">Predictif</h1>
+        <div class="flex gap-x-3">
+            <a href="PageInformations.html">
+                Informations
+            </a>
+            <a href="PageAcceuilConnecte.html">
+                Accueil Client
+            </a>
+            <a href="PageAcceuilConnecteEmploye.html">
+                Accueil Employe
+            </a>
+        </div>
       </div>
       <div class="flex items-center gap-x-3">
-        <button
-          onclick="Logout()"
-          class="rounded-lg px-5 py-2 bg-indigo-600 text-white"
-        >
-          Déconnexion
-        </button>
+        <div class="flex items-center gap-x-3">
+           <button onclick="Logout()">Déconnexion</button>
+         </div>
       </div>
     </header>
     <main class="flex gap-y-4 flex-col container">
@@ -121,8 +129,7 @@
         </div>
       </div>
       <div
-        hidden
-        class="flex flex-col gap-y-5 IfIsConsulting"
+        class="flex flex-col gap-y-5 hidden IfIsConsulting"
       >
         <header>
           <h2 class="font-semibold text-3xl text-center text-gray-900">
@@ -171,21 +178,22 @@
           </form>
           <aside
             id="aide"
-            class="flex rounded-lg bg-gray-100 gap-y-3"
+            class="flex flex-col rounded-lg bg-gray-100 gap-y-3 w-1/3"
           ></aside>
         </div>
       </div>
       <div class="flex flex-col gap-y-5">
         <header>
           <h2 class="font-semibold text-3xl text-center text-gray-900">
-            Historique de voyage
+            Historique des scéances
           </h2>
         </header>
         <table class="w-full text-left">
           <thead class="bg-gray-50">
             <tr class="border">
               <th class="uppercase w-1/4 p-3">Medium</th>
-              <th class="w-2/4 p-3">Date</th>
+              <th class="w-1/4 p-3">Date</th>
+              <th class="w-1/4 p-3">Commentaire</th>
               <th class="uppercase w-1/4 p-3">Status</th>
             </tr>
           </thead>
@@ -203,10 +211,7 @@
           action="javascript:void(0)"
           onsubmit="terminerConsultation(this)"
         >
-          <input
-            type="text"
-            name="personneId"
-          />
+            <textarea name="commentaire" placeholder="Commentaire"></textarea>
           <button
             type="submit"
             class="rounded-lg px-5 py-2 bg-indigo-600 text-white"
@@ -217,12 +222,29 @@
       </footer>
     </main>
     <script type="text/javascript">
+      const params = new URLSearchParams(document.location.search);
+
+        if (params.get("consulting") === "true") {
+          Array.from(document.getElementsByClassName("IfIsConsulting"))
+            .forEach((element) => {
+                element.hidden = false;
+                element.classList.remove("hidden");
+            });
+        }
+        
+    const consultationId = params.get("consultationId");      
+    const personneId = params.get("personneId");
+                
       /***
        * @param {HTMLFormElement} form
        */
-      const terminerConsultation = (form) => {
-        MakeRequest("TerminerConsultation", new FormData(form)).then(() => {
-          window.location.href = "PageAccueilConnecte.html";
+      const terminerConsultation = (form) => {  
+          
+          const formData = new FormData(form);
+          formData.append("consultationId", consultationId);
+                    
+        MakeRequest("TerminerSeance", formData).then(() => {
+          window.location.href = "PageAcceuilConnecteEmploye.html";
         });
       };
 
@@ -230,12 +252,17 @@
        * @param {HTMLFormElement} form
        */
       const genererAide = (form) => {
-        MakeRequest("GetPrediction", new FormData())
+          
+          const formData = new FormData(form);
+          formData.append("consultationId", consultationId);
+                    formData.append("personneId", personneId);
+
+        MakeRequest("GetPredictions", formData)
           .then((response) => response.json())
-          .then((data) => {
+          .then(({ predictions }) => {
             const aideNode = document.getElementById("aide");
 
-            aideNode.innerHTML = Object.entries(data)
+            aideNode.innerHTML = Object.entries(predictions)
               .map(([key, value]) => {
                 return `
                 <p class="mt-5 text-sm">
@@ -275,17 +302,20 @@
           <tr>
             <td class="p-3">
               <a href="profile">
-                ${props.nomClient} <span class="font-semibold">${mediumType}</span>
+                ${props.nomClient} <span class="font-semibold">${props.mediumType}</span>
               </a>
             </td>
             <td class="p-3">
-              <p>${props.dateDebut}</p>
+              <p>${props.dateDebut ?? ""}</p>
+            </td>
+            <td class="p-3">
+              <p>${props.commentaire ?? ""}</p>
             </td>
             <td class="p-3">
               <span
                 class="px-3 py-1 text-sm font-bold bg-purple-100 text-purple-500 rounded-md"
               >
-                ${props.status}
+                ${props.statut}
               </span>
             </td>
           </tr>
@@ -293,32 +323,12 @@
 
         return tr;
       };
-
-      const params = new URLSearchParams(document.location.search);
-
-      document.addEventListener("load", () => {
-        if (params.get("consulting") === "true") {
-          document
-            .getElementsByClassName("IfIsConsulting")
-            .forEach((element) => {
-              element.hidden = false;
-            });
-
-          const elements = document.getElementsByName("personneId");
-
-          elements.forEach((element) => {
-            if (element instanceof HTMLInputElement) {
-              element.value = personneId;
-            }
-          });
-        }
-      });
-
+        
         const formData = new FormData();
+        
+        formData.append("personneId", personneId);
 
-        formData.append("personneId", params.get("personneId"));
-
-        MakeRequest(`GetConsultationEnCours`, formData)
+        MakeRequest(`GetFicheClient`, formData)
           .then((response) => response.json())
           .then(({ profilAstral,profilClient, consultations }) => {
             const profilAstralNode = document.getElementById("profilAstral");
@@ -327,18 +337,18 @@
               profilAstralNode.appendChild(profilAstralToHTML(key, value));
             });
 
-            const consultationHistorique = consultations.filter(
-              ({ status }) => status === "Validée"
-            );
-
             const consultationHistoriqueNode = document.getElementById(
               "consultationHistorique"
             );
 
-            consultationHistorique.forEach((consultation) => {
+            consultations.forEach((consultation) => {
               consultationHistoriqueNode.appendChild(
                 consultationToHTML(consultation)
               );
+            });
+            
+            Array.from(document.getElementsByTagName("input")).forEach((input) => {
+                input.value = profilClient[input.name];
             });
           });
     </script>
